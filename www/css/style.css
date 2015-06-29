@@ -1,0 +1,19 @@
+/* Empty. Add your own CSS if you like */
+html{
+  text-align: center;
+  /*background-color: #dd3333 !important;*/
+}
+.done {
+  text-decoration: line-through;
+}
+.menu{
+  text-align: left;
+}
+/********Home*******/
+.hola{
+  text-align: center;
+  background-color: #dd3333;
+}
+body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
