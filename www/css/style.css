@@ -1,6 +1,5 @@
 /* Empty. Add your own CSS if you like */
 html{
-  text-align: ;
   /*background-color: #dd3333 !important;*/
 }
 .done {
@@ -10,9 +9,14 @@ html{
   text-align: left;
 }
 /********Home*******/
-.hola{
+.text-center{
   text-align: center;
-  background-color: #dd3333;
+}
+.link{
+  color:#4F8EF7 !important;
+}
+.link:hover, .link:focus {
+  color: #0b62ef !important;
 }
 body {
   cursor: url('http://ionicframework.com/img/finger.png'), auto;

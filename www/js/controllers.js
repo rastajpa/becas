@@ -53,7 +53,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   })
   $urlRouterProvider.otherwise("/event/home");
 })
-.controller('homeCtrl', function($scope,$ionicSideMenuDelegate) {
+.controller('homeCtrl', function($scope,$cordovaInAppBrowser) {
 })
 .controller('MainCtrl', function($scope, $ionicSideMenuDelegate) {
   $scope.attendees = [
@@ -97,5 +97,5 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 })
 .controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
 })
-.controller('aboutCtrl', function($scope,$ionicSideMenuDelegate) {
+.controller('aboutCtrl', function($scope,$cordovaInAppBrowser) {
 });
