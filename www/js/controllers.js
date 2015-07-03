@@ -11,7 +11,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     views: {
       'menuContent' :{
         templateUrl: "pages/home.html",
-        controller: "homeCtrl"
+        controller: "HomeCtrl"
       }
     }
   })
@@ -57,12 +57,57 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       'menuContent' :{
         templateUrl: "pages/map.html",
         controller: "mapCtrl"
+      })
+  .state('eventmenu.options', {
+    url: "/options",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/options.html",
+        controller: "optionsCtrl"
+      }
+    }
+  })
+  .state('eventmenu.states', {
+    url: "/states",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/states.html",
+        controller: "statesCtrl"
+      }
+    }
+  })
+  .state('eventmenu.payments', {
+    url: "/payments",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/payments.html",
+        controller: "paymentsCtrl"
+      }
+    }
+  })
+  .state('eventmenu.claims', {
+    url: "/claims",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/claims.html",
+        controller: "claimsCtrl"
       }
     }
   })
   $urlRouterProvider.otherwise("/event/home");
 })
-.controller('homeCtrl', function($scope,$cordovaInAppBrowser) {
+.controller('HomeCtrl', function($scope, LoginService, $ionicPopup, $state) {
+    $scope.data = {};
+    $scope.login = function() {
+        LoginService.loginUser($scope.data.email, $scope.data.password).success(function(data) {
+            $state.go('eventmenu.options');
+        }).error(function(data) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Falló el ingreso!',
+                template: 'Por favor revise sus datos!'
+            });
+        });
+    }
 })
 .controller('MainCtrl', function($scope, $ionicSideMenuDelegate) {
   $scope.attendees = [
@@ -159,3 +204,14 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   });
 
 })
+
+.controller('aboutCtrl', function($scope,$cordovaInAppBrowser) {
+})
+.controller('optionsCtrl', function($scope) {
+})
+.controller('claimsCtrl', function($scope) {
+})
+.controller('paymentsCtrl', function($scope) {
+})
+.controller('statesCtrl', function($scope) {
+});

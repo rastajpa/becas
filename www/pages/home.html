@@ -1,4 +1,4 @@
-<ion-view view-title="¡Bienvenido!" hide-nav-bar="false">
+<ion-view view-title="Becas universitarias" name="login-view" hide-nav-bar="false">
 <ion-content>
 <div class="item item-body">
   <img class="col col-50 col-offset-25" src="img/logo_becas.png">
@@ -6,15 +6,15 @@
   <br>
   <h2><strong>Para comenzar ingresá tu email y contraseña.</strong></h2>
 </div> 
+<div class="list list-inset">
 <label class="item item-input">
-  <span class="input-label">Email</span>
-  <input type="text">
+  <input type="text" placeholder="Email" ng-model="data.email">
 </label>
 <label class="item item-input">
-  <span class="input-label">Contraseña</span>
-  <input type="password">
+  <input type="password" placeholder="Contraseña" ng-model="data.password">
 </label>
+</div>
 <br>
-<button class="button button-block button-assertive">Ingresar</button>
+<button class="button button-block button-assertive" ng-click="login()">Ingresar</button>
 </ion-content>
 </ion-view>
