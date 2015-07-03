@@ -60,6 +60,33 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
+  .state('eventmenu.states', {
+    url: "/states",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/states.html",
+        controller: "statesCtrl"
+      }
+    }
+  })
+  .state('eventmenu.payments', {
+    url: "/payments",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/payments.html",
+        controller: "paymentsCtrl"
+      }
+    }
+  })
+  .state('eventmenu.claims', {
+    url: "/claims",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/claims.html",
+        controller: "claimsCtrl"
+      }
+    }
+  })
   $urlRouterProvider.otherwise("/event/home");
 })
 .controller('HomeCtrl', function($scope, LoginService, $ionicPopup, $state) {
@@ -119,5 +146,11 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 })
 .controller('aboutCtrl', function($scope,$cordovaInAppBrowser) {
 })
-.controller('optionsCtrl', function($scope,$state) {
+.controller('optionsCtrl', function($scope) {
+})
+.controller('claimsCtrl', function($scope) {
+})
+.controller('paymentsCtrl', function($scope) {
+})
+.controller('statesCtrl', function($scope) {
 });
