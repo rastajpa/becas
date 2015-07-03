@@ -2,6 +2,9 @@
 html{
   /*background-color: #dd3333 !important;*/
 }
+body {
+  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+}
 .done {
   text-decoration: line-through;
 }
@@ -18,6 +21,11 @@ html{
 .link:hover, .link:focus {
   color: #0b62ef !important;
 }
-body {
-  cursor: url('http://ionicframework.com/img/finger.png'), auto;
+
+.scroll{
+  height: 100%;
+}
+#map{
+  height: 100%;
+  width: 100%;
 }

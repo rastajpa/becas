@@ -51,6 +51,15 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
+  .state('eventmenu.map', {
+    url: "/map",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/map.html",
+        controller: "mapCtrl"
+      }
+    }
+  })
   $urlRouterProvider.otherwise("/event/home");
 })
 .controller('homeCtrl', function($scope,$cordovaInAppBrowser) {
@@ -97,5 +106,56 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 })
 .controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
 })
-.controller('aboutCtrl', function($scope,$cordovaInAppBrowser) {
-});
+.controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading) {
+  $ionicModal.fromTemplateUrl('pages/map.html', {
+    scope: $scope
+  }).then(function(modal) {
+    $scope.modal = modal;
+    google.maps.event.addDomListener(window, 'load', function() {
+      console.log("hola");
+        var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
+ 
+        var mapOptions = {
+            center: myLatlng,
+            zoom: 16
+        };
+ 
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        $scope.map = map;
+  });
+
+
+  });
+    
+    
+    google.maps.event.addDomListener(window, 'load', function() {
+      console.log("hola");
+        var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
+ 
+        var mapOptions = {
+            center: myLatlng,
+            zoom: 16
+        };
+ 
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        $scope.map = map;
+  });
+
+})
+.controller('mapCtrl', function($scope,$ionicLoading){
+  google.maps.event.addDomListener(window, 'load', function() {
+        var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
+ 
+        var mapOptions = {
+            center: myLatlng,
+            zoom: 16
+        };
+ 
+        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+        $scope.map = map;
+  });
+
+})
