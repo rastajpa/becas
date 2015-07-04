@@ -57,6 +57,8 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       'menuContent' :{
         templateUrl: "pages/map.html",
         controller: "mapCtrl"
+      }
+    }
       })
   .state('eventmenu.options', {
     url: "/options",
@@ -109,7 +111,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         });
     }
 })
-.controller('MainCtrl', function($scope, $ionicSideMenuDelegate) {
+.controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory) {
   $scope.attendees = [
   { firstname: 'Nicolas', lastname: 'Cage' },
   { firstname: 'Jean-Claude', lastname: 'Van Damme' },
@@ -119,6 +121,13 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
+    $ionicHistory.nextViewOptions({
+  disableAnimate: true,
+  disableBack: true
+});
+
+  /*$ionicNavBarDelegate.showBackButton();
+  $ionicHistory.goBack();*/
 })
 .controller('CheckinCtrl', function($scope) {
   $scope.showForm = true;  
@@ -156,62 +165,57 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
-    google.maps.event.addDomListener(window, 'load', function() {
-      console.log("hola");
-        var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
- 
-        var mapOptions = {
-            center: myLatlng,
-            zoom: 16
-        };
- 
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        $scope.map = map;
-  });
-
-
-  });
-    
-    
-    google.maps.event.addDomListener(window, 'load', function() {
-      console.log("hola");
-        var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
- 
-        var mapOptions = {
-            center: myLatlng,
-            zoom: 16
-        };
- 
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        $scope.map = map;
-  });
-
-})
-.controller('mapCtrl', function($scope,$ionicLoading){
-  google.maps.event.addDomListener(window, 'load', function() {
-        var myLatlng = new google.maps.LatLng(37.3000, -120.4833);
- 
-        var mapOptions = {
-            center: myLatlng,
-            zoom: 16
-        };
- 
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-
-        $scope.map = map;
-  });
 
 })
 
-.controller('aboutCtrl', function($scope,$cordovaInAppBrowser) {
+    var map_options = {
+        center: new google.maps.LatLng(-6.21, 106.84),
+        zoom: 11,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var map = new google.maps.Map(document.getElementById("map"), map_options);
+
+    $scope.map = map;
+
 })
-.controller('optionsCtrl', function($scope) {
+.controller('mapCtrl', function($scope,$ionicLoading,$compile){
+
+    var map_options = {
+        center: new google.maps.LatLng(-6.21, 106.84),
+        zoom: 11,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+
+    var map = new google.maps.Map(document.getElementById("map"), map_options);
+
+
+    google.maps.event.addListener(map, "click", function(event)
+    {
+        marker.setPosition(event.latLng);
+    });
+ $scope.map = map;
+
+
+})
+
+.controller('optionsCtrl', function($scope,$ionicHistory) {
+
 })
 .controller('claimsCtrl', function($scope) {
+    $ionicHistory.nextViewOptions({
+  disableAnimate: true,
+  disableBack: true
+});
+
 })
 .controller('paymentsCtrl', function($scope) {
+    $ionicHistory.nextViewOptions({
+  disableAnimate: true,
+  disableBack: true
+});
+
 })
 .controller('statesCtrl', function($scope) {
+
 });
