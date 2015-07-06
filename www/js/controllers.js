@@ -70,7 +70,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     }
   })
   .state('eventmenu.states', {
-    url: "/states",
+    url: "/options/states",
     views: {
       'menuContent' :{
         templateUrl: "pages/states.html",
@@ -79,7 +79,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     }
   })
   .state('eventmenu.payments', {
-    url: "/payments",
+    url: "/options/payments",
     views: {
       'menuContent' :{
         templateUrl: "pages/payments.html",
@@ -88,7 +88,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     }
   })
   .state('eventmenu.claims', {
-    url: "/claims",
+    url: "/options/claims",
     views: {
       'menuContent' :{
         templateUrl: "pages/claims.html",
@@ -98,7 +98,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   })
   $urlRouterProvider.otherwise("/event/home");
 })
-.controller('HomeCtrl', function($scope, LoginService, $ionicPopup, $state) {
+.controller('HomeCtrl', function($scope, LoginService, $ionicPopup, $state,$ionicHistory) {
     $scope.data = {};
     $scope.login = function() {
         LoginService.loginUser($scope.data.email, $scope.data.password).success(function(data) {
@@ -200,22 +200,29 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 })
 
 .controller('optionsCtrl', function($scope,$ionicHistory) {
+//  $ionicHistory.nextViewOptions({
+//   disableAnimate: false,
+//   disableBack: false
+// });
 
 })
-.controller('claimsCtrl', function($scope) {
-    $ionicHistory.nextViewOptions({
+.controller('claimsCtrl', function($scope,$ionicHistory) {
+  /*$ionicHistory.nextViewOptions({
   disableAnimate: true,
   disableBack: true
-});
+});*/
 
 })
-.controller('paymentsCtrl', function($scope) {
-    $ionicHistory.nextViewOptions({
-  disableAnimate: true,
-  disableBack: true
-});
+.controller('paymentsCtrl', function($scope,$ionicHistory) {
+//   $ionicHistory.nextViewOptions({
+//   disableAnimate: true,
+//   disableBack: true
+// });
 
 })
-.controller('statesCtrl', function($scope) {
-
+.controller('statesCtrl', function($scope,$ionicHistory) {
+//   $ionicHistory.nextViewOptions({
+//   disableAnimate: true,
+//   disableBack: true
+// });
 });
