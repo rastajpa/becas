@@ -69,28 +69,28 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
-  .state('eventmenu.states', {
-    url: "/options/states",
+  .state('eventmenu.options.states', {
+    url: "/states",
     views: {
-      'menuContent' :{
+      'state-tab' :{
         templateUrl: "pages/states.html",
         controller: "statesCtrl"
       }
     }
   })
-  .state('eventmenu.payments', {
-    url: "/options/payments",
+  .state('eventmenu.options.payments', {
+    url: "/payments",
     views: {
-      'menuContent' :{
+      'payments-tab' :{
         templateUrl: "pages/payments.html",
         controller: "paymentsCtrl"
       }
     }
   })
-  .state('eventmenu.claims', {
-    url: "/options/claims",
+  .state('eventmenu.options.claims', {
+    url: "/claims",
     views: {
-      'menuContent' :{
+      'claims-tab' :{
         templateUrl: "pages/claims.html",
         controller: "claimsCtrl"
       }
@@ -199,7 +199,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 
 })
 
-.controller('optionsCtrl', function($scope,$ionicHistory) {
+.controller('optionsCtrl', function($scope,$ionicHistory,$ionicSlideBoxDelegate) {
 //  $ionicHistory.nextViewOptions({
 //   disableAnimate: false,
 //   disableBack: false

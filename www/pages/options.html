@@ -1,16 +1,28 @@
- <ion-view view-title="Opciones" name="menucontent">
+<ion-view view-title="Opciones" name="menuContent"  hide-nav-bar="false">
 
-    <ion-content padding="true">
-      <ul class="list">
-    <li class="item">
-     <a href="#/event/options/states" class="item"> Estado de la beca </a>
-    </li>
-    <li class="item">
-     <a href="#/event/options/payments" class="item" > Pagos </a>
-    </li>
-    <li class="item">
-    <a href="#/event/options/claims" class="item">  Reclamos </a>
-    </li>
-	</ul>
-    </ion-content>
-  </ion-view>
+    <ion-tabs class="tabs-top tabs-striped tabs-icon-top">
+    <ion-slide-box on-slide-changed="slideHasChanged($slideIndex)">
+
+    <ion-tab title="Estado actual" href="#/event/options/states" icon-on="ion-ios-information" icon-off="ion-ios-information-outline">
+    <ion-slide>
+    <ion-nav-view name="state-tab"></ion-nav-view> 
+    </ion-slide>
+    </ion-tab>
+
+    <ion-tab title="Pagos" href="#/event/options/payments" icon-on="ion-social-usd" icon-off="ion-social-usd-outline">
+    <ion-slide>
+
+    <ion-nav-view name="payments-tab"></ion-nav-view> 
+    </ion-slide>
+    </ion-tab>
+
+    <ion-tab title="Reclamos" href="#/event/options/claims" icon-on="ion-ios-compose" icon-off="ion-ios-compose-outline">
+    <ion-slide>
+
+    <ion-nav-view name="claims-tab"></ion-nav-view>
+    </ion-slide>
+    </ion-tab>
+    </ion-tabs>
+    </ion-slide-box>
+
+</ion-view>
