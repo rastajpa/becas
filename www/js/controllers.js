@@ -236,5 +236,8 @@ function userSession(data){
 .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate) {
   console.log("hola");
  $ionicNavBarDelegate.showBackButton();
+  $scope.myGoBack = function() {
+    $ionicHistory.goBack();
+  };
 });
 

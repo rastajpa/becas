@@ -2,7 +2,7 @@
  <ion-content scroll="false">
  <div class="list">
   <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
-  <a href="#/event/user" class="item ion-person" menu-close> Datos Personales</a>
+  <a href="#/event/user" class="item ion-person" ng-click="closePopover()"> Datos Personales</a>
   <a href="#/event/home" class="item ion-log-out" menu-close> Cerrar sesión</a>
   <div ng-click="goToUser()" class="item ion-person" menu-close> Datos Personales</div>
 </div>
