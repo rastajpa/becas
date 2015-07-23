@@ -4,7 +4,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   .state('eventmenu', {
     url: "/event",
     abstract: true,
-    templateUrl: "pages/menu.html"
+    templateUrl: "pages/menu.html",
   })
   .state('eventmenu.home', {
     url: "/home",
@@ -51,15 +51,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
-  .state('eventmenu.map', {
-    url: "/map",
-    views: {
-      'menuContent' :{
-        templateUrl: "pages/map.html",
-        controller: "mapCtrl"
-      }
-    }
-      })
+
   .state('eventmenu.options', {
     url: "/options",
     views: {
@@ -96,6 +88,15 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
+  .state('eventmenu.user', {
+    url: "/user",
+    views: {
+      'menuContent' :{
+        templateUrl: "pages/user.html",
+        controller: "userCtrl"
+      }
+    }
+  })
   $urlRouterProvider.otherwise("/event/home");
 })
 .controller('HomeCtrl', function($scope, LoginService, $ionicPopup, $state,$ionicHistory) {
@@ -111,13 +112,38 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         });
     }
 })
-.controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory) {
-  $scope.attendees = [
-  { firstname: 'Nicolas', lastname: 'Cage' },
-  { firstname: 'Jean-Claude', lastname: 'Van Damme' },
-  { firstname: 'Keanu', lastname: 'Reeves' },
-  { firstname: 'Steven', lastname: 'Seagal' }
-  ];
+.controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory,$ionicPopover) {
+
+  // .fromTemplateUrl() method
+  $ionicPopover.fromTemplateUrl('pages/popover.html', {
+    scope: $scope
+  }).then(function(popover) {
+    $scope.popover = popover;
+  });
+   $scope.setPlatform = function(p) {
+    document.body.classList.remove('platform-ios');
+    document.body.classList.remove('platform-android');
+    document.body.classList.add('platform-' + p);
+    $scope.demo = p;
+  }
+  $scope.openPopover = function($event) {
+    $scope.popover.show($event);
+  };
+  $scope.closePopover = function() {
+    $scope.popover.hide();
+  };
+  //Cleanup the popover when we're done with it!
+  $scope.$on('$destroy', function() {
+    $scope.popover.remove();
+  });
+  // Execute action on hide popover
+  $scope.$on('popover.hidden', function() {
+    // Execute action
+  });
+  // Execute action on remove popover
+  $scope.$on('popover.removed', function() {
+    // Execute action
+  });
   $scope.toggleLeft = function() {
     $ionicSideMenuDelegate.toggleLeft();
   };
@@ -129,35 +155,6 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   /*$ionicNavBarDelegate.showBackButton();
   $ionicHistory.goBack();*/
 })
-.controller('CheckinCtrl', function($scope) {
-  $scope.showForm = true;  
-  $scope.shirtSizes = [
-  { text: 'Large', value: 'L' },
-  { text: 'Medium', value: 'M' },
-  { text: 'Small', value: 'S' }
-  ];
-  $scope.attendee = {};
-  $scope.submit = function() {
-    if(!$scope.attendee.firstname) {
-      alert('Info required');
-      return;
-    }
-    $scope.showForm = false;
-    $scope.attendees.push($scope.attendee);
-  };
-})
-.controller('AttendeesCtrl', function($scope) { 
-  $scope.activity = [];
-  $scope.arrivedChange = function(attendee) {
-    var msg = attendee.firstname + ' ' + attendee.lastname;
-    msg += (!attendee.arrived ? ' has arrived, ' : ' just left, '); 
-    msg += new Date().getMilliseconds();
-    $scope.activity.push(msg);
-    if($scope.activity.length > 3) {
-      $scope.activity.splice(0, 1);
-    }
-  };  
-})
 .controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
 })
 .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading) {
@@ -165,37 +162,29 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
-
 })
 
-    var map_options = {
-        center: new google.maps.LatLng(-6.21, 106.84),
-        zoom: 11,
+  $scope.openModal = function () {
+    $scope.modal.show();
+    var latlng = new google.maps.LatLng(-26.8376638,-65.2127732);
+    var myOptions = {
+        zoom: 18,
+        center: latlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
+    var map = new google.maps.Map(document.getElementById("map"), myOptions);
+    google.maps.event.addDomListener(window, "load");
+        var marker = new google.maps.Marker({
+                position: latlng,
+                map: map,
+                title: "Secretaría General de Becas"
+            });
 
-    var map = new google.maps.Map(document.getElementById("map"), map_options);
-
-    $scope.map = map;
-
-})
-.controller('mapCtrl', function($scope,$ionicLoading,$compile){
-
-    var map_options = {
-        center: new google.maps.LatLng(-6.21, 106.84),
-        zoom: 11,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
-
-    var map = new google.maps.Map(document.getElementById("map"), map_options);
-
-
-    google.maps.event.addListener(map, "click", function(event)
-    {
-        marker.setPosition(event.latLng);
-    });
- $scope.map = map;
-
+            google.maps.event.addListener(marker, 'click', function() {
+                infowindow.open(map,marker);
+            });
+  };
+   
 
 })
 
@@ -220,9 +209,32 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 // });
 
 })
+.controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
+var session = $q.defer();
+  session.promise.then(userSession);
+  var hola = $http.get('http://localhost/becas/web/usuarios')
+  .success(function(data,status, headers,config){
+  session.resolve(data);
+  })
+  .error(function(data,status,headers,config){
+  });
+  console.log($http.get('http://localhost/becas/web/usuarios'));
+//   $ionicHistory.nextViewOptions({
+//   disableAnimate: true,
+//   disableBack: true
+// });
+function userSession(data){
+  console.log(data[0]);
+}
+})
 .controller('statesCtrl', function($scope,$ionicHistory) {
 //   $ionicHistory.nextViewOptions({
 //   disableAnimate: true,
 //   disableBack: true
 // });
+})
+.controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate) {
+  console.log("hola");
+ $ionicNavBarDelegate.showBackButton();
 });
+

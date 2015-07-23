@@ -5,6 +5,12 @@ html{
 body {
   cursor: url('http://ionicframework.com/img/finger.png'), auto;
 }
+.keyboard-open .tabs{
+  display:none;
+  }
+.keyboard-open .has-tabs{
+ bottom:0;
+ }
 .done {
   text-decoration: line-through;
 }
@@ -28,4 +34,14 @@ body {
 #map{
   height: 100%;
   width: 100%;
+}
+.popover {
+    height: auto !important;
+}
+.popover ion-header-bar {
+    position: relative;
+}
+.popover ion-content {
+    top: 0;
+    position: relative;
 }

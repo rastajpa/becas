@@ -4,10 +4,11 @@
 <ion-nav-back-button class="button-icon icon ion-arrow-left-c">
 </ion-nav-back-button>
 <ion-nav-buttons side="left">
-<button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+<button class="button button-icon button-clear ion-android-menu" menu-toggle="left">
 
 </button>
 </ion-nav-buttons>
+
 </ion-nav-bar>
 <ion-nav-view name="menuContent"></ion-nav-view>
 </ion-side-menu-content> 
@@ -17,15 +18,17 @@
       <h1 class="title"><img src="img/sintetico_becas.png" class="title-image" width="" height="100%"></h1>
 </ion-header-bar>
 <ion-content>
-<ul class="list">
+<div class="list">
   <!-- Note each link has the 'menu-close' attribute so the menu auto closes when clicking on one of these links -->
   <a href="#/event/home" class="item ion-home" menu-close> Inicio</a>
-  <!--<a href="#/event/attendees" class="item" menu-close>Attendees</a>-->
-  <!--<a href="#/event/check-in" class="item" menu-close>Check-in</a>-->
-  <!--<a href="#/event/attendees" class="item" menu-close>Attendees</a>-->
+  <div class="item item-divider">Opciones de usuario</div>
+  <a href="#/event/options/states" class="item ion-ios-paper" menu-close> Estado actual</a>
+  <a href="#/event/options/payments" class="item ion-social-usd" menu-close> Pagos</a>
+  <a href="#/event/options/claims" class="item ion-ios-compose" menu-close> Reclamos</a>
+  <div class="item item-divider">Extras</div>
   <a href="#/event/news" class="item ion-ios-paper" menu-close> Noticias recientes</a>
   <a href="#/event/about" class="item ion-information-circled" menu-close> Acerca de nosotros</a>
-</ul>
+</div>
 </ion-content>
 </ion-side-menu>
 </ion-side-menus>
