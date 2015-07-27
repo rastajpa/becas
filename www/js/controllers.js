@@ -202,36 +202,61 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 });*/
 
 })
-.controller('paymentsCtrl', function($scope,$ionicHistory) {
-//   $ionicHistory.nextViewOptions({
-//   disableAnimate: true,
-//   disableBack: true
-// });
-
-})
 .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
-var session = $q.defer();
-  session.promise.then(userSession);
-  var hola = $http.get('http://localhost/becas/web/usuarios')
-  .success(function(data,status, headers,config){
-  session.resolve(data);
-  })
-  .error(function(data,status,headers,config){
-  });
-  console.log($http.get('http://localhost/becas/web/usuarios'));
-//   $ionicHistory.nextViewOptions({
-//   disableAnimate: true,
-//   disableBack: true
-// });
-function userSession(data){
-  console.log(data[0]);
-}
 })
-.controller('statesCtrl', function($scope,$ionicHistory) {
-//   $ionicHistory.nextViewOptions({
-//   disableAnimate: true,
-//   disableBack: true
-// });
+.controller('statesCtrl', function($scope,$ionicHistory,$q,$http) {
+var session = $q.defer();
+session.promise.then(userSession);
+var hola = $http.get('http://localhost/becas/web/evaluacion')
+.success(function(data,status, headers,config){
+session.resolve(data);
+})
+.error(function(data,status,headers,config){
+});
+function userSession(data){
+  //hay que hacer control para el documento
+  if(data[1].causa1== null && data[1].causa2== null &&
+  data[1].causa3== null && data[1].causa4== null &&
+  data[1].comentarioE== ''){
+    var session = $q.defer();
+    session.promise.then(userSession2);
+    var hola = $http.get('http://localhost/becas/web/alumnos')
+.success(function(data,status, headers,config){
+session.resolve(data);
+})
+.error(function(data,status,headers,config){
+});
+  function userSession2(data2){
+  if(data2[0].becario==1){
+    console.log("hola");
+    //muestra RENOVANTE
+    $scope.state = "RENOVANTE";
+    //muestra PUNTAJE
+    $scope.score = "Entero que muestra el puntaje";
+  }
+  if(data2[0].becario==0){
+    //muestra APROBADO
+     $scope.state = "APROBADO";
+    //muestra PUNTAJE
+    $scope.score = "Entero que muestra el puntaje";
+  }
+  }
+  }
+  else{
+  //muestra FUERA DE CONCURSO
+  $scope.state = "FUERA DE CONCURSO";
+  //muestra causa1
+  $scope.cause1 = data[1].causa1;
+  //muestra causa2
+  $scope.cause1 = data[1].causa2;
+  //muestra causa3
+    $scope.cause1 = data[1].causa3;
+  //muestra causa4
+    $scope.cause1 = data[1].causa4;
+  //muestra data[1].comentarioE
+    $scope.commentE = data[1].comentarioE;
+  }
+}
 })
 .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate) {
   console.log("hola");
