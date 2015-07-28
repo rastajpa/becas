@@ -1,5 +1,15 @@
 <ion-nav-view>
 <ion-content>
-    <h2>Pagina de reclamos</h2>
+<h2>Pagina de reclamoss</h2>
+<h6>Los reclamos serán enviados a la casilla de correo de la secretaría general de becas para su analisis</h6>
+<div class="list">
+<label class="item item-input">
+<input type="text" placeholder="Agregar aquí el asunto del email">
+</label>
+<label class="item item-input">
+<textarea ng-model="claims" placeholder="Escriba aquí su reclamo"></textarea>
+</label>
+</div>
+<button class="button button-block button-assertive" ng-click="sendEmail()">Enviar Email</button>
 </ion-content>
 </ion-nav-view>
