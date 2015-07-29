@@ -113,17 +113,21 @@
     $scope.login = function() {
       var session = $q.defer();
       session.promise.then(userSession);
-      var hola = $http.get('http://localhost/becas/web/usuarios')
+      var log = $http.get('http://localhost/becas/web/usuarios')
       .success(function(data,status, headers,config){
       session.resolve(data);
       })
       .error(function(data,status,headers,config){
+          $ionicPopup.alert({
+            title: 'ERROR '+ status + '!',
+            template: 'Tiempo de espera agotado. Por favor revise su conexión a internet y vuelva a intentarlo.'
+        });
       });
       function userSession(data){
       LoginService.loginUser($scope.data.email, $scope.data.password,data).success(function(data) {
         $state.go('eventmenu.options.states1');
       }).error(function(data) {
-        var alertPopup = $ionicPopup.alert({
+        $ionicPopup.alert({
           title: 'Falló el ingreso!',
           template: 'Por favor revise sus datos!'
         });
@@ -176,15 +180,38 @@
 })
   .controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
   })
-  .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading) {
+  .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading, $timeout, $ionicPopup) {
     $ionicModal.fromTemplateUrl('pages/map.html', {
       scope: $scope
     }).then(function(modal) {
       $scope.modal = modal;
     })
 
+
     $scope.openModal = function () {
+      var load = false;
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+     
       $scope.modal.show();
+
+       $timeout(function () {
+        console.log(load);
+        if(!load){ 
+          $ionicLoading.hide();
+        $ionicPopup.alert({
+            title: 'Tiempo de espera agotado',
+            template: 'Por favor revise su conexión a internet y vuelva a intentarlo.'
+        });
+        $scope.modal.hide();
+      }
+       
+      }, 10000);
       var latlng = new google.maps.LatLng(-26.8376638,-65.2127732);
       var myOptions = {
         zoom: 18,
@@ -192,16 +219,18 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       var map = new google.maps.Map(document.getElementById("map"), myOptions);
-      google.maps.event.addDomListener(window, "load");
-      var marker = new google.maps.Marker({
+       var marker = new google.maps.Marker({
         position: latlng,
         map: map,
         title: "Secretaría General de Becas"
       });
 
+
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
       });
+      google.maps.event.addDomListener(window, "load", $ionicLoading.hide(), load = true);
+     
     };
 
 
