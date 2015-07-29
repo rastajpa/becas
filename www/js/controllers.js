@@ -219,7 +219,10 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       var map = new google.maps.Map(document.getElementById("map"), myOptions);
-       var marker = new google.maps.Marker({
+       google.maps.event.addDomListener(window, "load", $ionicLoading.hide(), load = true);
+   
+
+      var marker = new google.maps.Marker({
         position: latlng,
         map: map,
         title: "Secretaría General de Becas"
@@ -229,8 +232,7 @@
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
       });
-      google.maps.event.addDomListener(window, "load", $ionicLoading.hide(), load = true);
-     
+       
     };
 
 
