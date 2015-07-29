@@ -108,9 +108,16 @@
     })
     $urlRouterProvider.otherwise("/event/home");
   })
-  .controller('HomeCtrl', function($scope,$q,$http, LoginService, $ionicPopup, $state,$ionicHistory) {
+  .controller('HomeCtrl', function($scope,$q,$http, LoginService, $ionicPopup, $state,$ionicHistory,$ionicLoading) {
     $scope.data = {};
     $scope.login = function() {
+       $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
       var session = $q.defer();
       session.promise.then(userSession);
       var log = $http.get('http://localhost/becas/web/usuarios')
@@ -118,6 +125,7 @@
       session.resolve(data);
       })
       .error(function(data,status,headers,config){
+        $ionicLoading.hide();
           $ionicPopup.alert({
             title: 'ERROR '+ status + '!',
             template: 'Tiempo de espera agotado. Por favor revise su conexión a internet y vuelva a intentarlo.'
@@ -126,7 +134,9 @@
       function userSession(data){
       LoginService.loginUser($scope.data.email, $scope.data.password,data).success(function(data) {
         $state.go('eventmenu.options.states1');
+        $ionicLoading.hide();
       }).error(function(data) {
+        $ionicLoading.hide();
         $ionicPopup.alert({
           title: 'Falló el ingreso!',
           template: 'Por favor revise sus datos!'
