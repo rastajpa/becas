@@ -1,15 +1,23 @@
 <ion-nav-view>
 <ion-content>
-<h2>Pagina de reclamoss</h2>
-<h6>Los reclamos serán enviados a la casilla de correo de la secretaría general de becas para su analisis</h6>
-<div class="list">
-<label class="item item-input">
-<input type="text" placeholder="Agregar aquí el asunto del email">
-</label>
-<label class="item item-input">
-<textarea ng-model="$parent.claims" placeholder="Escriba aquí su reclamo"></textarea>
-</label>
-</div>
+
+
+  <div ng-repeat="item in items" class=" item item-checkbox" style = "border : none">
+    <label class="checkbox">
+       <input type="checkbox"  ng-model="item.selected" >
+     </label>
+     {{item.text}}
+  </div>
+  <div class=" item item-input" style = "border : none">
+  <span class="item" style = "border : none">Otro motivo: </span>
+     <label class="item item-input" >
+       <input type="text"ng-model="$parent.otro"></input>
+     </label>
+
+    
+  </div>  
+
+<h6> *Los reclamos serán enviados a la casilla de correo de la secretaría general de becas para su analisis</h6>
 <button class="button button-block button-assertive" ng-click="sendEmail()">Enviar Email</button>
 </ion-content>
 </ion-nav-view>

@@ -116,11 +116,9 @@
       var log = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email)
         //+'&UsuariosSearch[clave]='+$scope.data.password)
       .success(function(data,status, headers,config){
-        console.log(data);
       session.resolve(data);
       })
       .error(function(data,status,headers,config){
-        console.log(data);
         $ionicLoading.hide();
           $ionicPopup.alert({
             title: 'ERROR '+ status + '!',
@@ -129,7 +127,6 @@
       });
       function userSession(data){
       LoginService.loginUser($scope.data.email, $scope.data.password,data).success(function(data) {
-        console.log(data);
         $state.go('eventmenu.options.states1', {usuario: data});
       }).error(function(data) {
         var alertPopup = $ionicPopup.alert({
@@ -242,7 +239,28 @@
 
 })
   .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer) {
+    $scope.items = [
+    {text : "No quedé preseleccionado/a"},
+    {text : "Documentación fuera de término"},
+    {text : "Inscripción fuera de término"},
+    {text : "Excepción a los requisitos (Promedio, Ingresos, Permanencia, Regularidad)"},
+    {text : "Documentación faltante o incorrecta"},
+    {text : "Revisión de la Evaluación"}
+    ]
+
     $scope.sendEmail= function() {
+        $scope.itemArray = [];
+        $scope.motivos = "";
+        $scope.otro = "";
+        angular.forEach($scope.items, function(item){
+        if (!!item.selected) $scope.itemArray.push(item.text);
+    
+        })
+        console.log($scope.itemArray);
+        for (var i = $scope.itemArray.length - 1; i >= 0; i--) {
+          $scope.motivos = $scope.motivos + $scope.itemArray[i] + '\n'
+        };
+     
           $cordovaEmailComposer.isAvailable().then(function() {
        // is available
           }, function () {
@@ -253,7 +271,13 @@
           var email = {
             to: 'becascomunic@gmail.com',
             subject: 'Reclamos',
-            body: $scope.claims,
+            body: "Apellido y Nombre:" + '<br>' +
+                  "DNI:" + '<br>' +
+                  "Carrera o Escuela:" + '<br>' +
+                  "Teléfono:" + '<br>' +
+                  "Email:" + '<br>' +
+                  "Motivo/s: " + $scope.motivos + '<br>' + 
+                  "Otro motivo:" + $scope.otro,
             isHtml: true
           };
 
