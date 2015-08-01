@@ -7,7 +7,7 @@
 <input type="text" placeholder="Agregar aquí el asunto del email">
 </label>
 <label class="item item-input">
-<textarea ng-model="claims" placeholder="Escriba aquí su reclamo"></textarea>
+<textarea ng-model="$parent.claims" placeholder="Escriba aquí su reclamo"></textarea>
 </label>
 </div>
 <button class="button button-block button-assertive" ng-click="sendEmail()">Enviar Email</button>
