@@ -61,23 +61,14 @@
         }
       }
     })
-    .state('eventmenu.options.states1', {
-      url: "/states1/:usuario",
+    .state('eventmenu.options.states', {
+      url: "/states/:usuario",
       views: {
         'state-tab' :{
-          templateUrl: "pages/states1.html",
-          controller: "statesCtrl1"
+          templateUrl: "pages/states.html",
+          controller: "statesCtrl"
         }
       }
-    })
-    .state('eventmenu.options.states2', {
-      url: "/states2/:document",
-      views: {
-        'state-tab' :{
-          templateUrl: "pages/states2.html",
-          controller: "statesCtrl2"
-        }
-      },
     })
     .state('eventmenu.options.payments', {
       url: "/payments",
@@ -108,15 +99,14 @@
     })
     $urlRouterProvider.otherwise("/event/home");
   })
-  .controller('HomeCtrl', function($scope,$q,$http, LoginService, $ionicPopup, $state,$ionicHistory) {
+  .controller('HomeCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory) {
     $scope.data = {};
     $scope.login = function() {
       var session = $q.defer();
       session.promise.then(userSession);
-      var log = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email)
-        //+'&UsuariosSearch[clave]='+$scope.data.password)
+      var log = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email
+      +'&UsuariosSearch[clave]='+$scope.data.password)
       .success(function(data,status, headers,config){
-        console.log(data);
       session.resolve(data);
       })
       .error(function(data,status,headers,config){
@@ -128,15 +118,15 @@
         });
       });
       function userSession(data){
-      LoginService.loginUser($scope.data.email, $scope.data.password,data).success(function(data) {
-        console.log(data);
-        $state.go('eventmenu.options.states1', {usuario: data});
-      }).error(function(data) {
-        var alertPopup = $ionicPopup.alert({
-          title: 'Falló el ingreso!',
-          template: 'Por favor revise sus datos!'
-        });
-      });
+        if(data.length == 0){
+          $ionicPopup.alert({
+            title: 'Fallo el ingreso',
+            template: 'Por favor revise sus datos'
+          });
+        }
+        else{
+        $state.go('eventmenu.options.states', {usuario: data[0].usuario});
+      }
     }
   }
   })
@@ -264,60 +254,35 @@
 })
   .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
   })
-  .controller('statesCtrl1', function($scope,$ionicHistory,StateService,$q,$http,$state,$ionicPopup) {
-    $scope.data = {};
-    $scope.state = function() {
-      var session = $q.defer();
-      session.promise.then(userSession);
-      var hola = $http.get('http://localhost/becas/web/alumnos')
-      .success(function(data,status, headers,config){
-      session.resolve(data);
-      })
-      .error(function(data,status,headers,config){
-      });
-      function userSession(data){
-      StateService.UserState($scope.data.document,data).success(function(data) {
-        $state.go('eventmenu.options.states2', {document: $scope.data.document});
-      }).error(function(data) {
-        var alertPopup = $ionicPopup.alert({
-          title: 'Ingreso de manera incorrecta su documento!',
-          template: 'Por favor revise sus datos!'
-        });
-      });
-    }
-  }
-  })
-  .controller('statesCtrl2', function($scope,$ionicHistory,StateService,$q,$http,$stateParams) {
+  .controller('statesCtrl', function($scope,$ionicHistory,StateService,$q,$http,$stateParams) {
     var session = $q.defer();
     session.promise.then(userSession);
-    var hola = $http.get('http://localhost/becas/web/evaluacion')
+    var hola = $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]='+$stateParams.usuario)
     .success(function(data,status, headers,config){
       session.resolve(data);
     })
     .error(function(data,status,headers,config){
     });
     function userSession(data){
-      for (var i = data.length - 1; i >= 0; i--) {
-        if(data[i].dniE==$stateParams.document){
-  if(data[i].causa1== null && data[i].causa2== null &&
-    data[i].causa3== null && data[i].causa4== null &&
-    data[i].comentarioE== ''){
+  if(data[0].causa1== null && data[0].causa2== null &&
+    data[0].causa3== null && data[0].causa4== null &&
+    data[0].comentarioE== ''){
     var session = $q.defer();
   session.promise.then(userSession2);
-  var hola = $http.get('http://localhost/becas/web/alumnos')
+  var hola = $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]='+$stateParams.dni)
   .success(function(data,status, headers,config){
     session.resolve(data);
   })
   .error(function(data,status,headers,config){
   });
   function userSession2(data2){
-    if(data2[i].becario==1){
+    if(data2[0].becario==1){
   //muestra RENOVANTE
   $scope.state = "RENOVANTE";
   //muestra PUNTAJE
   $scope.score = "Entero que muestra el puntaje";
 }
-if(data2[i].becario==0){
+if(data2[0].becario==0){
   //muestra APROBADO
   $scope.state = "APROBADO";
   //muestra PUNTAJE
@@ -329,17 +294,15 @@ else{
   //muestra FUERA DE CONCURSO
   $scope.state = "FUERA DE CONCURSO";
   //muestra causa1
-  $scope.cause1 = data[i].causa1;
+  $scope.cause1 = data[0].causa1;
   //muestra causa2
-  $scope.cause1 = data[i].causa2;
+  $scope.cause1 = data[0].causa2;
   //muestra causa3
-  $scope.cause1 = data[i].causa3;
+  $scope.cause1 = data[0].causa3;
   //muestra causa4
-  $scope.cause1 = data[i].causa4;
+  $scope.cause1 = data[0].causa4;
   //muestra data[1].comentarioE
-  $scope.commentE = data[i].comentarioE;
-}
-}
+  $scope.commentE = data[0].comentarioE;
 }
 }
 })
