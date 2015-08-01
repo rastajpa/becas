@@ -8,10 +8,12 @@ angular.module('becas.services', ['ionic','ngCordova'])
             if (email == data[i].email && pw == data[i].clave){
                 var email1 = data[i].email;
                 var clave1 = data[i].clave;
+                var usuario1 = data[i].usuario;
             } 
     
             if (email == email1 && pw == clave1) {
-                deferred.resolve('Bienvenido!');
+
+                deferred.resolve(usuario1);
             } else {
                 deferred.reject('Datos erroneos.');
             }

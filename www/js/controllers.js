@@ -62,7 +62,7 @@
       }
     })
     .state('eventmenu.options.states1', {
-      url: "/states1",
+      url: "/states1/:usuario",
       views: {
         'state-tab' :{
           templateUrl: "pages/states1.html",
@@ -108,36 +108,25 @@
     })
     $urlRouterProvider.otherwise("/event/home");
   })
-  .controller('HomeCtrl', function($scope,$q,$http, LoginService, $ionicPopup, $state,$ionicHistory,$ionicLoading) {
+  .controller('HomeCtrl', function($scope,$q,$http, LoginService, $ionicPopup, $state,$ionicHistory) {
     $scope.data = {};
     $scope.login = function() {
-       $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
       var session = $q.defer();
       session.promise.then(userSession);
-      var log = $http.get('http://localhost/becas/web/usuarios')
+      var hola = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email)
+        //+'&UsuariosSearch[clave]='+$scope.data.password)
       .success(function(data,status, headers,config){
+        console.log(data);
       session.resolve(data);
       })
       .error(function(data,status,headers,config){
-        $ionicLoading.hide();
-          $ionicPopup.alert({
-            title: 'ERROR '+ status + '!',
-            template: 'Tiempo de espera agotado. Por favor revise su conexión a internet y vuelva a intentarlo.'
-        });
       });
       function userSession(data){
       LoginService.loginUser($scope.data.email, $scope.data.password,data).success(function(data) {
-        $state.go('eventmenu.options.states1');
-        $ionicLoading.hide();
+        console.log(data);
+        $state.go('eventmenu.options.states1', {usuario: data});
       }).error(function(data) {
-        $ionicLoading.hide();
-        $ionicPopup.alert({
+        var alertPopup = $ionicPopup.alert({
           title: 'Falló el ingreso!',
           template: 'Por favor revise sus datos!'
         });
@@ -190,38 +179,15 @@
 })
   .controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
   })
-  .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading, $timeout, $ionicPopup) {
+  .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading) {
     $ionicModal.fromTemplateUrl('pages/map.html', {
       scope: $scope
     }).then(function(modal) {
       $scope.modal = modal;
     })
 
-
     $scope.openModal = function () {
-      var load = false;
-      $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
-     
       $scope.modal.show();
-
-       $timeout(function () {
-        console.log(load);
-        if(!load){ 
-          $ionicLoading.hide();
-        $ionicPopup.alert({
-            title: 'Tiempo de espera agotado',
-            template: 'Por favor revise su conexión a internet y vuelva a intentarlo.'
-        });
-        $scope.modal.hide();
-      }
-       
-      }, 10000);
       var latlng = new google.maps.LatLng(-26.8376638,-65.2127732);
       var myOptions = {
         zoom: 18,
@@ -229,20 +195,16 @@
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       var map = new google.maps.Map(document.getElementById("map"), myOptions);
-       google.maps.event.addDomListener(window, "load", $ionicLoading.hide(), load = true);
-   
-
+      google.maps.event.addDomListener(window, "load");
       var marker = new google.maps.Marker({
         position: latlng,
         map: map,
         title: "Secretaría General de Becas"
       });
 
-
       google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map,marker);
       });
-       
     };
 
 
