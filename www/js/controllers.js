@@ -113,13 +113,19 @@
     $scope.login = function() {
       var session = $q.defer();
       session.promise.then(userSession);
-      var hola = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email)
+      var log = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email)
         //+'&UsuariosSearch[clave]='+$scope.data.password)
       .success(function(data,status, headers,config){
         console.log(data);
       session.resolve(data);
       })
       .error(function(data,status,headers,config){
+        console.log(data);
+        $ionicLoading.hide();
+          $ionicPopup.alert({
+            title: 'ERROR '+ status + '!',
+            template: 'Tiempo de espera agotado. Por favor revise su conexión a internet y vuelva a intentarlo.'
+        });
       });
       function userSession(data){
       LoginService.loginUser($scope.data.email, $scope.data.password,data).success(function(data) {
@@ -179,7 +185,8 @@
 })
   .controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
   })
-  .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading) {
+
+  .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading, $timeout, $ionicPopup,$cordovaEmailComposer) {
     $ionicModal.fromTemplateUrl('pages/map.html', {
       scope: $scope
     }).then(function(modal) {
@@ -206,6 +213,23 @@
         infowindow.open(map,marker);
       });
     };
+    $scope.sendEmail= function() {
+      $cordovaEmailComposer.isAvailable().then(function() {
+   // is available
+      }, function () {
+   // not available
+      alert("No puede usar este servicio debido a que su disposivo no lo soporta. Por favor realice el reclamo a becascomunic@gmail.com")
+      });
+
+      var email = {
+        to: 'becascomunic@gmail.com',
+        isHtml: true
+      };
+
+      $cordovaEmailComposer.open(email).then(null, function () {
+   // user cancelled email
+      });
+    }
 
 
   })
@@ -217,22 +241,26 @@
   // });
 
 })
-  .controller('claimsCtrl', function($scope,$ionicHistory) {
+  .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer) {
     $scope.sendEmail= function() {
-        if(window.plugins && window.plugins.emailComposer) {
-            window.plugins.emailComposer.showEmailComposerWithCallback(function(result) {
-                console.log("Response -> " + result);
-            }, 
-            $scope.subject, // Subject
-            $scope.claims,                      // Body
-            ["juanpabloabuin@gmail.com"],    // To
-            null,                    // CC
-            null,                    // BCC
-            false,                   // isHTML
-            null,                    // Attachments
-            null);                   // Attachment Data
-        }
-    }
+          $cordovaEmailComposer.isAvailable().then(function() {
+       // is available
+          }, function () {
+       // not available
+            alert("No puede usar este servicio debido a que su disposivo no lo soporta. Por favor realice el reclamo a becascomunic@gmail.com")
+          });
+
+          var email = {
+            to: 'becascomunic@gmail.com',
+            subject: 'Reclamos',
+            body: $scope.claims,
+            isHtml: true
+          };
+
+          $cordovaEmailComposer.open(email).then(null, function () {
+          // user cancelled email
+          });
+   }
 })
   .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
   })
