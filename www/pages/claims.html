@@ -1,23 +1,23 @@
 <ion-nav-view>
 <ion-content>
 
-
+<h3>Motivo del reclamo, consulta o pedido:</h3>
+<h6>*Puede seleccionar más de una opción</h6>
   <div ng-repeat="item in items" class=" item item-checkbox" style = "border : none">
-    <label class="checkbox">
-       <input type="checkbox"  ng-model="item.selected" >
+    <label class="checkbox checkbox-assertive">
+       <input type="checkbox" ng-model="item.selected" >
      </label>
      {{item.text}}
   </div>
-  <div class=" item item-input" style = "border : none">
+  <div class="item" style = "border : none">
   <span class="item" style = "border : none">Otro motivo: </span>
      <label class="item item-input" >
-       <input type="text"ng-model="$parent.otro"></input>
+       <input type="text" ng-model="mot.otros"></input>
      </label>
-
-    
   </div>  
 
-<h6> *Los reclamos serán enviados a la casilla de correo de la secretaría general de becas para su analisis</h6>
-<button class="button button-block button-assertive" ng-click="sendEmail()">Enviar Email</button>
+<h6> *Los reclamos serán enviados a la casilla de correo de la Secretaría General de Becas para su análisis</h6>
+<div class="item" style = "border : none">
+<button class="button button-block button-assertive" ng-click="sendEmail()">Enviar Email</button></div>
 </ion-content>
 </ion-nav-view>

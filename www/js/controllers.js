@@ -99,12 +99,12 @@
     })
     $urlRouterProvider.otherwise("/event/home");
   })
-  .controller('HomeCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory) {
+  .controller('HomeCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory,$ionicLoading) {
     $scope.data = {};
     $scope.login = function() {
       var session = $q.defer();
       session.promise.then(userSession);
-      var log = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email
+      var log = $http.get('http://192.168.1.106/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email
       +'&UsuariosSearch[clave]='+$scope.data.password)
       .success(function(data,status, headers,config){
       session.resolve(data);
@@ -117,6 +117,7 @@
         });
       });
       function userSession(data){
+        $ionicLoading.hide();
         if(data.length == 0){
           $ionicPopup.alert({
             title: 'Fallo el ingreso',
@@ -183,7 +184,27 @@
     })
 
     $scope.openModal = function () {
+      var load = false;
+      $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
       $scope.modal.show();
+      $timeout(function () {
+        console.log(load);
+        if(!load){ 
+          $ionicLoading.hide();
+        $ionicPopup.alert({
+            title: 'Tiempo de espera agotado',
+            template: 'Por favor revise su conexión a internet y vuelva a intentarlo.'
+        });
+        $scope.modal.hide();
+     }
+       
+      }, 10000);
       var latlng = new google.maps.LatLng(-26.8376638,-65.2127732);
       var myOptions = {
         zoom: 18,
@@ -239,11 +260,11 @@
     {text : "Documentación faltante o incorrecta"},
     {text : "Revisión de la Evaluación"}
     ]
-
+    $scope.mot = {otros :""};
     $scope.sendEmail= function() {
         $scope.itemArray = [];
         $scope.motivos = "";
-        $scope.otro = "";
+        console.log($scope.mot.otros);
         angular.forEach($scope.items, function(item){
         if (!!item.selected) $scope.itemArray.push(item.text);
     
@@ -269,7 +290,7 @@
                   "Teléfono:" + '<br>' +
                   "Email:" + '<br>' +
                   "Motivo/s: " + $scope.motivos + '<br>' + 
-                  "Otro motivo:" + $scope.otro,
+                  "Otro motivo:" + $scope.mot.otros,
             isHtml: true
           };
 
@@ -281,9 +302,18 @@
   .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
   })
   .controller('statesCtrl', function($scope,$ionicHistory,StateService,$q,$http,$stateParams) {
+    $scope.data = {};
+     $scope.login = function() {
+       $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
     var session = $q.defer();
     session.promise.then(userSession);
-    var hola = $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]='+$stateParams.usuario)
+    var hola = $http.get('http://192.168.1.106/becas/web/evaluacion?EvaluacionSearch[dniE]='+$stateParams.usuario)
     .success(function(data,status, headers,config){
       session.resolve(data);
     })
@@ -295,7 +325,7 @@
     data[0].comentarioE== ''){
     var session = $q.defer();
   session.promise.then(userSession2);
-  var hola = $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]='+$stateParams.dni)
+  var hola = $http.get('http://192.168.1.106/becas/web/alumnos?AlumnosSearch[dni]='+$stateParams.dni)
   .success(function(data,status, headers,config){
     session.resolve(data);
   })
@@ -329,6 +359,7 @@ else{
   $scope.cause1 = data[0].causa4;
   //muestra data[1].comentarioE
   $scope.commentE = data[0].comentarioE;
+}
 }
 }
 })
