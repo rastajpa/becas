@@ -102,11 +102,19 @@
   .controller('HomeCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory,$ionicLoading) {
     $scope.data = {};
     $scope.login = function() {
+       $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
       var session = $q.defer();
       session.promise.then(userSession);
       var log = $http.get('http://192.168.1.106/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email
       +'&UsuariosSearch[clave]='+$scope.data.password)
       .success(function(data,status, headers,config){
+      $ionicLoading.hide();
       session.resolve(data);
       })
       .error(function(data,status,headers,config){
@@ -193,18 +201,7 @@
         showDelay: 0
       });
       $scope.modal.show();
-      $timeout(function () {
-        console.log(load);
-        if(!load){ 
-          $ionicLoading.hide();
-        $ionicPopup.alert({
-            title: 'Tiempo de espera agotado',
-            template: 'Por favor revise su conexión a internet y vuelva a intentarlo.'
-        });
-        $scope.modal.hide();
-     }
-       
-      }, 10000);
+      
       var latlng = new google.maps.LatLng(-26.8376638,-65.2127732);
       var myOptions = {
         zoom: 18,
