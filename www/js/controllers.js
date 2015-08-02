@@ -193,15 +193,8 @@
 
     $scope.openModal = function () {
       var load = false;
-      $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
       $scope.modal.show();
-      
+ 
       var latlng = new google.maps.LatLng(-26.8376638,-65.2127732);
       var myOptions = {
         zoom: 18,
