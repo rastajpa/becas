@@ -5,6 +5,7 @@
       url: "/event",
       abstract: true,
       templateUrl: "pages/menu.html",
+      controller:"MenuCtrl"
     })
     .state('eventmenu.home', {
       url: "/home",
@@ -53,7 +54,7 @@
     })
 
     .state('eventmenu.options', {
-      url: "/options",
+      url: "/options/:usuario",
       views: {
         'menuContent' :{
           templateUrl: "pages/options.html",
@@ -62,7 +63,7 @@
       }
     })
     .state('eventmenu.options.states', {
-      url: "/states/:usuario",
+      url: "/states",
       views: {
         'state-tab' :{
           templateUrl: "pages/states.html",
@@ -89,7 +90,7 @@
       }
     })
     .state('eventmenu.user', {
-      url: "/user",
+      url: "/user/:usuario",
       views: {
         'menuContent' :{
           templateUrl: "pages/user.html",
@@ -99,6 +100,11 @@
     })
     $urlRouterProvider.otherwise("/event/home");
   })
+    .controller('MenuCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory) {
+ $scope.clickClaims = function (){
+    $state.go('eventmenu.options.claims', {usuario: "hola"});
+  }
+    })
   .controller('HomeCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory) {
     $scope.data = {};
     $scope.login = function() {
@@ -124,10 +130,10 @@
           });
         }
         else{
-        $state.go('eventmenu.options.states', {usuario: data[0].usuario});
+        $state.go('eventmenu.options', {usuario: data[0].usuario});
       }
     }
-  }
+    }
   })
   .controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory,$ionicPopover) {
 
@@ -223,14 +229,20 @@
 
   })
 
-  .controller('optionsCtrl', function($scope,$ionicHistory,$ionicSlideBoxDelegate) {
-  //  $ionicHistory.nextViewOptions({
-  //   disableAnimate: false,
-  //   disableBack: false
-  // });
-
+  .controller('optionsCtrl', function($scope,$ionicHistory,StateService,$stateParams,$state,$ionicSlideBoxDelegate) {
+   console.log($stateParams.usuario);
+   $scope.clickStates = function (){
+    $state.go('eventmenu.options.states');
+  };
+   $scope.clickClaims = function (){
+    $state.go('eventmenu.options.claims');
+  };
+  $scope.clickPayments = function (){
+    $state.go('eventmenu.options.payments');
+  }
 })
-  .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer) {
+  .controller('claimsCtrl', function($scope,$ionicHistory,StateService,$q,$http,$stateParams,$cordovaEmailComposer) {
+   console.log("hola");
     $scope.items = [
     {text : "No quedé preseleccionado/a"},
     {text : "Documentación fuera de término"},
@@ -253,6 +265,8 @@
           $scope.motivos = $scope.motivos + $scope.itemArray[i] + '\n'
         };
      
+        $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]='+$stateParams.dni)
+
           $cordovaEmailComposer.isAvailable().then(function() {
        // is available
           }, function () {
@@ -281,6 +295,7 @@
   .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
   })
   .controller('statesCtrl', function($scope,$ionicHistory,StateService,$q,$http,$stateParams) {
+    console.log("entre a state");
     var session = $q.defer();
     session.promise.then(userSession);
     var hola = $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]='+$stateParams.usuario)

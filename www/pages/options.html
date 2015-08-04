@@ -6,20 +6,20 @@
     <ion-tabs class="tabs-top tabs-striped tabs-icon-top">
     <ion-slide-box on-slide-changed="slideHasChanged($slideIndex)">
 
-    <ion-tab title="Estado actual" href="#/event/options/states1" icon-on="ion-ios-paper" icon-off="ion-ios-paper-outline">
+    <ion-tab title="Estado actual" ng-click="clickStates()" icon-on="ion-ios-paper" icon-off="ion-ios-paper-outline">
     <ion-slide>
     <ion-nav-view name="state-tab"></ion-nav-view> 
     </ion-slide>
     </ion-tab>
 
-    <ion-tab title="Pagos" href="#/event/options/payments" icon-on="ion-social-usd" icon-off="ion-social-usd-outline">
+    <ion-tab title="Pagos" ng-click="clickPayments()" icon-on="ion-social-usd" icon-off="ion-social-usd-outline">
     <ion-slide>
 
     <ion-nav-view name="payments-tab"></ion-nav-view> 
     </ion-slide>
     </ion-tab>
 
-    <ion-tab title="Reclamos" href="#/event/options/claims" icon-on="ion-ios-compose" icon-off="ion-ios-compose-outline">
+    <ion-tab title="Reclamos" ng-click="clickClaims()" icon-on="ion-ios-compose" icon-off="ion-ios-compose-outline">
     <ion-slide>
 
     <ion-nav-view name="claims-tab"></ion-nav-view>
