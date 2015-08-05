@@ -1,0 +1,15 @@
+
+RewriteEngine on
+                            
+ 
+                            
+# Si un directorio or  fichero existe, usalo directamente
+                            
+RewriteCond %{REQUEST_FILENAME} !-f
+                            
+RewriteCond %{REQUEST_FILENAME} !-d
+                            
+# De lo contrario usa index.php
+Header add Access-Control-Allow-Origin "*"                            
+RewriteRule . index.php
+                            
