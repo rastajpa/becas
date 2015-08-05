@@ -7,7 +7,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     this.login = function(email, password){
         var session = $q.defer();
         session.promise.then(userSession);
-        var log = $http.get('http://192.168.1.109/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+        var log = $http.get('http://192.168.1.110/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
         .success(function(data,status, headers,config){
             $ionicLoading.hide();
             session.resolve(data);
@@ -61,7 +61,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
     this.evaluacion = function(dni){
         var session = $q.defer();
         session.promise.then(evaluacionSession);
-        var hola = $http.get('http://192.168.1.109/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
+        var hola = $http.get('http://192.168.1.110/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
         .success(function(data,status, headers,config){
             session.resolve(data);
 
@@ -103,7 +103,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
 
         var session = $q.defer();
         session.promise.then(alumnosSession);
-        var hola = $http.get('http://192.168.1.109/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
+        var hola = $http.get('http://192.168.1.110/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
         .success(function(data,status, headers,config){
             session.resolve(data);
 
@@ -142,7 +142,7 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
     this.carreras = function(idcarrera){
         var session = $q.defer();
         session.promise.then(carrerasSession);
-        var hola = $http.get('http://192.168.1.109/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
+        var hola = $http.get('http://192.168.1.110/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
         .success(function(data,status, headers,config){
             session.resolve(data);
 
@@ -174,6 +174,7 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
         var session = $q.defer();
         session.promise.then(domicilioSession);
         var hola = $http.get('http://192.168.1.109/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
+
         .success(function(data,status, headers,config){
             session.resolve(data);
 
