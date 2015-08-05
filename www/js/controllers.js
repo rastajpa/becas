@@ -228,8 +228,6 @@
     console.log($scope.email);
     console.log($scope.dni);
 
-
-    alumnosServices.alumnos($scope.dni);
     $scope.alumnos = alumnosServices.alumnosFunction();
     $scope.Apellido = $scope.alumnos.apellido;
     $scope.Nombre = $scope.alumnos.nombre;
@@ -238,17 +236,15 @@
     console.log($scope.Apellido);
     console.log($scope.Nombre);
 
-    carrerasServices.carreras($scope.alumnos.idcarrera);
     $scope.carreras = carrerasServices.carrerasFunction();
     console.log("carrerasServices");
     console.log($scope.carreras);
     
-    domicilioServices.domicilio($scope.alumnos.idalumno);
     $scope.domicilio = domicilioServices.domicilioFunction();
     $scope.Telefono = $scope.domicilio.telefono;
     console.log("domicilioServices");
-     console.log($scope.domicilio);
-      console.log($scope.Telefono);
+    console.log($scope.domicilio);
+    console.log($scope.Telefono);
     $scope.items = [
     {text : "No quedé preseleccionado/a"},
     {text : "Documentación fuera de término"},
@@ -299,13 +295,19 @@
 })
   .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
   })
-  .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices,evaluacionServices,alumnosServices) {
+  .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
     
     $scope.login = loginServices.loginFunction();
 
     evaluacionServices.evaluacion($scope.login.usuario);
-   
     $scope.evaluacion = evaluacionServices.evaluacionFunction();
+    alumnosServices.alumnos($scope.login.usuario);
+
+    $scope.alumnos = alumnosServices.alumnosFunction();
+
+    carrerasServices.carreras($scope.alumnos.idcarrera);
+
+    domicilioServices.domicilio($scope.alumnos.idalumno);
 
   if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
     $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&
@@ -334,11 +336,11 @@ else{
   //muestra causa1
   $scope.cause1 = $scope.evaluacion.causa1;
   //muestra causa2
-  $scope.cause1 = $scope.evaluacion.causa2;
+  $scope.cause2 = $scope.evaluacion.causa2;
   //muestra causa3
-  $scope.cause1 = $scope.evaluacion.causa3;
+  $scope.cause3 = $scope.evaluacion.causa3;
   //muestra causa4
-  $scope.cause1 = $scope.evaluacion.causa4;
+  $scope.cause4 = $scope.evaluacion.causa4;
   //muestra data[1].comentarioE
   $scope.commentE = $scope.evaluacion.comentarioE;
 }
