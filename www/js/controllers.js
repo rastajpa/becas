@@ -62,7 +62,7 @@
       }
     })
     .state('eventmenu.options.states', {
-      url: "/states/:usuario",
+      url: "/states",
       views: {
         'state-tab' :{
           templateUrl: "pages/states.html",
@@ -99,44 +99,19 @@
     })
     $urlRouterProvider.otherwise("/event/home");
   })
-  .controller('HomeCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory,$ionicLoading) {
+  .controller('HomeCtrl', function($scope,loginServices,$ionicLoading) {
     $scope.data = {};
     $scope.login = function() {
        $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
-      var session = $q.defer();
-      session.promise.then(userSession);
-      var log = $http.get('http://192.168.1.106/becas/web/usuarios?UsuariosSearch[email]='+$scope.data.email
-      +'&UsuariosSearch[clave]='+$scope.data.password)
-      .success(function(data,status, headers,config){
-      $ionicLoading.hide();
-      session.resolve(data);
-      })
-      .error(function(data,status,headers,config){
-        $ionicLoading.hide();
-          $ionicPopup.alert({
-            title: 'ERROR '+ status + '!',
-            template: 'Tiempo de espera agotado. Por favor revise su conexión a internet y vuelva a intentarlo.'
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: true,
+            maxWidth: 200,
+            showDelay: 0
         });
-      });
-      function userSession(data){
-        $ionicLoading.hide();
-        if(data.length == 0){
-          $ionicPopup.alert({
-            title: 'Fallo el ingreso',
-            template: 'Por favor revise sus datos'
-          });
-        }
-        else{
-        $state.go('eventmenu.options.states', {usuario: data[0].usuario});
-      }
+      loginServices.login($scope.data.email,$scope.data.password);
     }
-  }
+    //$ionicLoading.hide();
   })
   .controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory,$ionicPopover) {
 
@@ -241,7 +216,31 @@
   // });
 
 })
-  .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer) {
+  .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer,loginServices, $q, $http) {
+    $scope.alumno = loginServices.loginFunction();
+    $scope.Apellido = "";
+    $scope.Nombre = "";
+    $scope.Carrera = "";
+    $scope.Telefono = "";
+    $scope.email = "";
+
+    var session = $q.defer();
+    session.promise.then(claimsFunction);
+      var log = $http.get('http://192.168.1.109/becas/web/alumnos?AlumnosSearch[dni]=' + $scope.dni)
+      .success(function(data,status, headers,config){
+      session.resolve(data);
+      })
+      .error(function(data,status,headers,config){
+          $ionicPopup.alert({
+            title: 'ERROR '+ status + '!',
+            template: 'Tiempo de espera agotado. Por favor revise su conexión a internet y vuelva a intentarlo.'
+        });
+      });
+      function claimsFunction(data){
+        $scope.Apellido = data[0].apellido;
+        $scope.Nombre = data[0].nombre;
+    }
+
     $scope.items = [
     {text : "No quedé preseleccionado/a"},
     {text : "Documentación fuera de término"},
@@ -252,14 +251,13 @@
     ]
     $scope.mot = {otros :""};
     $scope.sendEmail= function() {
+
         $scope.itemArray = [];
         $scope.motivos = "";
-        console.log($scope.mot.otros);
         angular.forEach($scope.items, function(item){
         if (!!item.selected) $scope.itemArray.push(item.text);
     
         })
-        console.log($scope.itemArray);
         for (var i = $scope.itemArray.length - 1; i >= 0; i--) {
           $scope.motivos = $scope.motivos + $scope.itemArray[i] + '\n'
         };
@@ -274,8 +272,8 @@
           var email = {
             to: 'becascomunic@gmail.com',
             subject: 'Reclamos',
-            body: "Apellido y Nombre:" + '<br>' +
-                  "DNI:" + '<br>' +
+            body: "Apellido y Nombre:" + $scope.Apellido + '<br>' +
+                  "DNI:" + $scope.Apellido + '<br>' +
                   "Carrera o Escuela:" + '<br>' +
                   "Teléfono:" + '<br>' +
                   "Email:" + '<br>' +
@@ -291,21 +289,19 @@
 })
   .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
   })
-  .controller('statesCtrl', function($scope,$ionicHistory,StateService,$q,$http,$stateParams) {
+  .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices) {
+    
+    $scope.alumno = loginServices.loginFunction();
+    console.log($scope.alumno);
+
     $scope.data = {};
-     $scope.login = function() {
-       $ionicLoading.show({
-        content: 'Loading',
-        animation: 'fade-in',
-        showBackdrop: true,
-        maxWidth: 200,
-        showDelay: 0
-      });
+    
     var session = $q.defer();
     session.promise.then(userSession);
-    var hola = $http.get('http://192.168.1.106/becas/web/evaluacion?EvaluacionSearch[dniE]='+$stateParams.usuario)
+    var hola = $http.get('http://192.168.1.109/becas/web/evaluacion?EvaluacionSearch[dniE]=' + $scope.alumno.usuario)
     .success(function(data,status, headers,config){
       session.resolve(data);
+    
     })
     .error(function(data,status,headers,config){
     });
@@ -315,13 +311,14 @@
     data[0].comentarioE== ''){
     var session = $q.defer();
   session.promise.then(userSession2);
-  var hola = $http.get('http://192.168.1.106/becas/web/alumnos?AlumnosSearch[dni]='+$stateParams.dni)
+  var hola = $http.get('http://192.168.1.109/becas/web/alumnos?AlumnosSearch[dni]=' + $scope.alumno.usuario)
   .success(function(data,status, headers,config){
     session.resolve(data);
   })
   .error(function(data,status,headers,config){
   });
   function userSession2(data2){
+    
     if(data2[0].becario==1){
   //muestra RENOVANTE
   $scope.state = "RENOVANTE";
@@ -351,10 +348,9 @@ else{
   $scope.commentE = data[0].comentarioE;
 }
 }
-}
 })
   .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate) {
-    console.log("hola");
+ 
     $ionicNavBarDelegate.showBackButton();
     $scope.myGoBack = function() {
       $ionicHistory.goBack();
