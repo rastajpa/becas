@@ -100,7 +100,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var idcarrera = "";
 
     this.alumnos = function(dni){
-        console.log(dni);
+
         var session = $q.defer();
         session.promise.then(alumnosSession);
         var hola = $http.get('http://192.168.1.109/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
@@ -115,6 +115,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
         }
 
         alumnosPut = function(data){
+            console.log("hola");
             becario = data[0].becario;
             apellido = data[0].apellido;
             nombre = data[0].nombre;
@@ -172,7 +173,7 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
     this.domicilio = function(idalumno){
         var session = $q.defer();
         session.promise.then(domicilioSession);
-        var hola = $http.get('http://192.168.1.100/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
+        var hola = $http.get('http://192.168.1.109/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
         .success(function(data,status, headers,config){
             session.resolve(data);
 
