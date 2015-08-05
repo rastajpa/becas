@@ -100,6 +100,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var idcarrera = "";
 
     this.alumnos = function(dni){
+        console.log(dni);
         var session = $q.defer();
         session.promise.then(alumnosSession);
         var hola = $http.get('http://192.168.1.109/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
@@ -143,7 +144,7 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
         var hola = $http.get('http://192.168.1.109/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
         .success(function(data,status, headers,config){
             session.resolve(data);
-            console.log(data);
+
         })
         .error(function(data,status,headers,config){
         });
@@ -153,7 +154,6 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
 
 
         carrerasPut = function(data){
-            console.log(carrera = data[0].carrera);
             carrera = data[0].carrera;
         };
 

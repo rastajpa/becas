@@ -6,17 +6,17 @@ body {
   cursor: url('http://ionicframework.com/img/finger.png'), auto;
 }
 .bar-assertive{
-  background-color: #DD3333 !important;
+  background-color: #ED3237 !important;
 }
 .button-assertive{
-  background-color: #DD3333 !important;
+  background-color: #ED3237 !important;
 }
 .checkbox-assertive input:before, .checkbox-assertive .checkbox-icon:before {
-    border-color: #DD3333 !important;
+    border-color: #ED3237 !important;
 }
 .checkbox-assertive input:checked:before, .checkbox-assertive input:checked + .checkbox-icon:before {
-    background:  #DD3333 !important;
-    border-color:  #DD3333 !important;
+    background:  #ED3237 !important;
+    border-color:  #ED3237 !important;
 }
 .done {
   text-decoration: line-through;

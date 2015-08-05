@@ -222,20 +222,33 @@
     
     $scope.login = loginServices.loginFunction();
     $scope.email = $scope.login.email;
-    $scope.dni = $scope.login.dni;
+    $scope.dni = $scope.login.usuario;
+    console.log("loginServices");
+    console.log($scope.login);
+    console.log($scope.email);
+    console.log($scope.dni);
 
-    alumnosServices.alumnos($scope.login.usuario);
+
+    alumnosServices.alumnos($scope.dni);
     $scope.alumnos = alumnosServices.alumnosFunction();
     $scope.Apellido = $scope.alumnos.apellido;
     $scope.Nombre = $scope.alumnos.nombre;
+    console.log("alumnosServices");
+    console.log($scope.alumnos);
+    console.log($scope.Apellido);
+    console.log($scope.Nombre);
 
     carrerasServices.carreras($scope.alumnos.idcarrera);
     $scope.carreras = carrerasServices.carrerasFunction();
-
+    console.log("carrerasServices");
+    console.log($scope.carreras);
+    
     domicilioServices.domicilio($scope.alumnos.idalumno);
     $scope.domicilio = domicilioServices.domicilioFunction();
     $scope.Telefono = $scope.domicilio.telefono;
-
+    console.log("domicilioServices");
+     console.log($scope.domicilio);
+      console.log($scope.Telefono);
     $scope.items = [
     {text : "No quedé preseleccionado/a"},
     {text : "Documentación fuera de término"},
