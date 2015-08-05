@@ -232,9 +232,6 @@
     carrerasServices.carreras($scope.alumnos.idcarrera);
     $scope.carreras = carrerasServices.carrerasFunction();
 
-    console.log($scope.carreras);
-    $scope.Carrera = $scope.carrera;
-
     domicilioServices.domicilio($scope.alumnos.idalumno);
     $scope.domicilio = domicilioServices.domicilioFunction();
     $scope.Telefono = $scope.domicilio.telefono;
@@ -274,7 +271,7 @@
             subject: 'Reclamos',
             body: "Apellido y Nombre:" + $scope.Apellido + '' + $scope.Nombre + '<br>' +
                   "DNI:" + $scope.dni + '<br>' +
-                  "Carrera o Escuela:" + $scope.Carrera + '<br>' +
+                  "Carrera o Escuela:" + $scope.carreras + '<br>' +
                   "Teléfono:" + $scope.Telefono + '<br>' +
                   "Email:" + $scope.email + '<br>' +
                   "Motivo/s: " + $scope.motivos + '<br>' + 
