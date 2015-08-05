@@ -107,7 +107,14 @@
   .controller('HomeCtrl', function($scope,loginServices,$ionicLoading) {
       $scope.data = {};
        $scope.login = function (){
-      loginServices.login($scope.data.email,$scope.data.password);
+        $ionicLoading.show({
+        content: 'Loading',
+        animation: 'fade-in',
+        showBackdrop: true,
+        maxWidth: 200,
+        showDelay: 0
+      });
+       loginServices.login($scope.data.email,$scope.data.password);
     }
     //$ionicLoading.hide();
   })
@@ -211,12 +218,12 @@
    
 })
 
-  .controller('claimsCtrl', function($scope,$ionicHistory, 
-    $cordovaEmailComposer, $q, $http,alumnosServices,loginServices,carrerasServices,domicilioServices) {
+  .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer, $q, $http,alumnosServices,loginServices,carrerasServices,domicilioServices) {
     
     $scope.login = loginServices.loginFunction();
     $scope.email = $scope.login.email;
-    
+    $scope.dni = $scope.login.dni;
+
     alumnosServices.alumnos($scope.login.usuario);
     $scope.alumnos = alumnosServices.alumnosFunction();
     $scope.Apellido = $scope.alumnos.apellido;
@@ -224,7 +231,9 @@
 
     carrerasServices.carreras($scope.alumnos.idcarrera);
     $scope.carreras = carrerasServices.carrerasFunction();
-    $scope.Carrera = $scope.carreras.carrera;
+
+    console.log($scope.carreras);
+    $scope.Carrera = $scope.carrera;
 
     domicilioServices.domicilio($scope.alumnos.idalumno);
     $scope.domicilio = domicilioServices.domicilioFunction();
@@ -263,8 +272,8 @@
           var email = {
             to: 'becascomunic@gmail.com',
             subject: 'Reclamos',
-            body: "Apellido y Nombre:" + $scope.Apellido + ''+ $scope.Nombre + '<br>' +
-                  "DNI:" + $scope.Apellido + '<br>' +
+            body: "Apellido y Nombre:" + $scope.Apellido + '' + $scope.Nombre + '<br>' +
+                  "DNI:" + $scope.dni + '<br>' +
                   "Carrera o Escuela:" + $scope.Carrera + '<br>' +
                   "Teléfono:" + $scope.Telefono + '<br>' +
                   "Email:" + $scope.email + '<br>' +
@@ -283,12 +292,10 @@
   .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices,evaluacionServices,alumnosServices) {
     
     $scope.login = loginServices.loginFunction();
-    console.log($scope.login.usuario);
 
     evaluacionServices.evaluacion($scope.login.usuario);
    
     $scope.evaluacion = evaluacionServices.evaluacionFunction();
-    console.log($scope.evaluacion);
 
   if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
     $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&

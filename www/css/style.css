@@ -5,12 +5,19 @@ html{
 body {
   cursor: url('http://ionicframework.com/img/finger.png'), auto;
 }
-.keyboard-open .tabs{
-  display:none;
-  }
-.keyboard-open .has-tabs{
- bottom:0;
- }
+.bar-assertive{
+  background-color: #DD3333 !important;
+}
+.button-assertive{
+  background-color: #DD3333 !important;
+}
+.checkbox-assertive input:before, .checkbox-assertive .checkbox-icon:before {
+    border-color: #DD3333 !important;
+}
+.checkbox-assertive input:checked:before, .checkbox-assertive input:checked + .checkbox-icon:before {
+    background:  #DD3333 !important;
+    border-color:  #DD3333 !important;
+}
 .done {
   text-decoration: line-through;
 }
