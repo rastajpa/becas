@@ -1,42 +1,34 @@
 <ion-view view-title="Datos Personales"  name="menuContent"  enable-menu-with-back-views="true" hide-back-button="false">
 <ion-nav-buttons side="right">
-<button class="button button-clear ion-close-round" ng-click=""></button>
+<button class="button button-clear ion-close-round" ng-click="goBack()"></button>
 </ion-nav-buttons>
 <ion-content>
-  <div class="list">
+<div class="list">
   <div class="item item-divider">Datos del usuario</div>
   <div class="item ion-person">
     <strong>Apellido/s y Nombre/s:</strong> {{alumnos.apellido}} {{alumnos.nombre}}
   </div>
-   <div class="item ion-card">
-    
+  <div class="item ion-card">
     <strong>DNI:</strong> {{login.usuario}}
   </div>
   <div class="item ion-egg">
-    
     <strong>Fecha de Nacimiento:</strong> {{alumnos.fechanac}}
   </div>
-    <div class="item ion-email">
-    
+  <div class="item ion-email"> 
     <strong>Email:</strong> {{login.email}}
   </div>
-  <div class="item ion-home">
-    
+  <div class="item ion-home"> 
     <strong>Domicilio:</strong> {{domicilio.calle}} {{domicilio.piso}} {{domicilio.dpto}}
   </div>
   <div class="item ion-ios-telephone">
     <strong>Teléfono:</strong> {{domicilio.telefono}}
   </div>
-  <div class="item ion-android-phone-portrait">
-    
+  <div class="item ion-android-phone-portrait">  
     <strong>Teléfono Celular:</strong> {{domicilio.celular}}
   </div>
- 
-  <div class="item ion-ribbon-a">
-    
+  <div class="item ion-ribbon-a"> 
     <strong>Carrera/Escuela:</strong> {{carrera.carrera}}
   </div>
-
 </div>
 </ion-content>
 </ion-view>
