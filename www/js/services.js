@@ -3,11 +3,19 @@ var app = angular.module('becas.services', ['ionic','ngCordova']);
 app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var usuario = "";
     var email="";
+    var conectado = false;
+
+    this.logout = function(){
+        usuario = "";
+        email = "";
+        conectado = false;
+        $state.go('eventmenu.home');
+    }
 
     this.login = function(email, password){
         var session = $q.defer();
         session.promise.then(userSession);
-        var log = $http.get('http://192.168.1.110/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+        var log = $http.get('http://192.168.1.109/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
         .success(function(data,status, headers,config){
             $ionicLoading.hide();
             session.resolve(data);
@@ -40,13 +48,15 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     loginPut = function(data){
         usuario = data[0].usuario;
         email = data[0].email;
+        conectado = true;
 
     };
 
     this.loginFunction = function(){
         return { 
             usuario : usuario,
-            email : email
+            email : email,
+            conectado : conectado
         }
     }
 }]);
@@ -61,7 +71,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
     this.evaluacion = function(dni){
         var session = $q.defer();
         session.promise.then(evaluacionSession);
-        var hola = $http.get('http://192.168.1.110/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
+        var hola = $http.get('http://192.168.1.109/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
         .success(function(data,status, headers,config){
             session.resolve(data);
 
@@ -98,12 +108,13 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var nombre = "";
     var idalumno = "";
     var idcarrera = "";
+    var fechanac = "";
 
     this.alumnos = function(dni){
 
         var session = $q.defer();
         session.promise.then(alumnosSession);
-        var hola = $http.get('http://192.168.1.110/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
+        var hola = $http.get('http://192.168.1.109/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
         .success(function(data,status, headers,config){
             session.resolve(data);
 
@@ -115,12 +126,12 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
         }
 
         alumnosPut = function(data){
-            console.log("hola");
             becario = data[0].becario;
             apellido = data[0].apellido;
             nombre = data[0].nombre;
             idcarrera = data[0].idcarrera;
-            idalumno = data[0].idAlumno;
+            idalumno = data[0].idalumno;
+            fechanac = data[0].fechanac;
         };
 
         this.alumnosFunction = function(){
@@ -129,7 +140,8 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
                 apellido : apellido,
                 nombre : nombre,
                 idcarrera : idcarrera,
-                idalumno : idalumno
+                idalumno : idalumno,
+                fechanac : fechanac
             }
         }
     }
@@ -142,7 +154,7 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
     this.carreras = function(idcarrera){
         var session = $q.defer();
         session.promise.then(carrerasSession);
-        var hola = $http.get('http://192.168.1.110/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
+        var hola = $http.get('http://192.168.1.109/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
         .success(function(data,status, headers,config){
             session.resolve(data);
 
@@ -169,6 +181,10 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
 app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
 
     var telefono = "";
+    var calle = "";
+    var celular = "";
+    var piso = "";
+    var dpto = "";
 
     this.domicilio = function(idalumno){
         var session = $q.defer();
@@ -188,11 +204,19 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
 
         domicilioPut = function(data){
             telefono = data[0].telefono;
+            calle = data[0].telefono;
+            celular = data[0].telefono;
+            piso = data[0].piso;
+            dpto = data[0].dpto;
         };
 
         this.domicilioFunction = function(){
             return { 
                 telefono : telefono,
+                calle : calle,
+                celular : celular,
+                piso : piso,
+                dpto : dpto
             }
         }
     }

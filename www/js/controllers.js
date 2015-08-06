@@ -101,7 +101,12 @@
     $urlRouterProvider.otherwise("/event/home");
   })
 
-    .controller('MenuCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory) {
+    .controller('MenuCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory,loginServices) {
+      $scope.conectado = false;
+      
+        $scope.userConnected = function () {
+          $scope.login = loginServices.loginFunction();
+        }
     })
  
   .controller('HomeCtrl', function($scope,loginServices,$ionicLoading) {
@@ -118,8 +123,7 @@
     }
     //$ionicLoading.hide();
   })
-  .controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory,$ionicPopover) {
-
+  .controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices) {
   // .fromTemplateUrl() method
   $ionicPopover.fromTemplateUrl('pages/popover.html', {
     scope: $scope
@@ -157,6 +161,11 @@
     disableAnimate: true,
     disableBack: true
   });
+
+  $scope.logout = function () {
+    loginServices.logout();
+    $scope.closePopover();
+  }
 
   /*$ionicNavBarDelegate.showBackButton();
   $ionicHistory.goBack();*/
@@ -219,32 +228,21 @@
 })
 
   .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer, $q, $http,alumnosServices,loginServices,carrerasServices,domicilioServices) {
-    
     $scope.login = loginServices.loginFunction();
     $scope.email = $scope.login.email;
     $scope.dni = $scope.login.usuario;
-    console.log("loginServices");
-    console.log($scope.login);
-    console.log($scope.email);
-    console.log($scope.dni);
+   
 
     $scope.alumnos = alumnosServices.alumnosFunction();
     $scope.Apellido = $scope.alumnos.apellido;
     $scope.Nombre = $scope.alumnos.nombre;
-    console.log("alumnosServices");
-    console.log($scope.alumnos);
-    console.log($scope.Apellido);
-    console.log($scope.Nombre);
+
 
     $scope.carreras = carrerasServices.carrerasFunction();
-    console.log("carrerasServices");
-    console.log($scope.carreras);
-    
+
     $scope.domicilio = domicilioServices.domicilioFunction();
     $scope.Telefono = $scope.domicilio.telefono;
-    console.log("domicilioServices");
-    console.log($scope.domicilio);
-    console.log($scope.Telefono);
+
     $scope.items = [
     {text : "No quedé preseleccionado/a"},
     {text : "Documentación fuera de término"},
@@ -254,6 +252,7 @@
     {text : "Revisión de la Evaluación"}
     ]
     $scope.mot = {otros :""};
+
     $scope.sendEmail= function() {
 
         $scope.itemArray = [];
@@ -263,11 +262,9 @@
     
         })
         for (var i = $scope.itemArray.length - 1; i >= 0; i--) {
-          $scope.motivos = $scope.motivos + $scope.itemArray[i] + '\n'
+          $scope.motivos = $scope.motivos + ('<br>' + '*' + $scope.itemArray[i])
         };
      
-        $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]='+$stateParams.dni)
-
           $cordovaEmailComposer.isAvailable().then(function() {
        // is available
           }, function () {
@@ -278,13 +275,13 @@
           var email = {
             to: 'becascomunic@gmail.com',
             subject: 'Reclamos',
-            body: "Apellido y Nombre:" + $scope.Apellido + '' + $scope.Nombre + '<br>' +
-                  "DNI:" + $scope.dni + '<br>' +
-                  "Carrera o Escuela:" + $scope.carreras + '<br>' +
-                  "Teléfono:" + $scope.Telefono + '<br>' +
-                  "Email:" + $scope.email + '<br>' +
+            body: "Apellido y Nombre: " + $scope.Apellido + ', ' + $scope.Nombre + '<br>' +
+                  "DNI: " + $scope.dni + '<br>' +
+                  "Carrera o Escuela: " + $scope.carreras.carrera + '<br>' +
+                  "Teléfono: " + $scope.Telefono + '<br>' +
+                  "Email: " + $scope.email + '<br>' +
                   "Motivo/s: " + $scope.motivos + '<br>' + 
-                  "Otro motivo:" + $scope.mot.otros,
+                  "Otro motivo: " + $scope.mot.otros,
             isHtml: true
           };
 
@@ -331,31 +328,24 @@ if($scope.alumnos.becario==0){
 }
 }
 else{
-  //muestra FUERA DE CONCURSO
+
   $scope.state = "FUERA DE CONCURSO";
-  //muestra causa1
+
   $scope.cause1 = $scope.evaluacion.causa1;
-  //muestra causa2
+
   $scope.cause2 = $scope.evaluacion.causa2;
-  //muestra causa3
+
   $scope.cause3 = $scope.evaluacion.causa3;
-  //muestra causa4
+
   $scope.cause4 = $scope.evaluacion.causa4;
-  //muestra data[1].comentarioE
+ 
   $scope.commentE = $scope.evaluacion.comentarioE;
 }
 })
-  .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate) {
-    
-    $scope.login = loginServices.loginFunction();
-    alumnosServices.alumnos($scope.login.usuario);
-    $scope.alumnos = alumnosServices.alumnosFunction();
-    $scope.Apellido = $scope.alumnos.apellido;
-    $scope.Nombre = $scope.alumnos.nombre;
-
-    $ionicNavBarDelegate.showBackButton();
-    $scope.myGoBack = function() {
-      $ionicHistory.goBack();
-    };
+  .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices) {
+        $scope.login = loginServices.loginFunction();
+     $scope.alumnos = alumnosServices.alumnosFunction();
+    $scope.domicilio = domicilioServices.domicilioFunction();
+      $scope.carrera = carrerasServices.carrerasFunction();
   });
 
