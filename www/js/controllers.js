@@ -101,10 +101,10 @@
     $urlRouterProvider.otherwise("/event/home");
   })
 
-    .controller('MenuCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory) {
+    .controller('MenuCtrl', function($scope,$q,$http,$state, $ionicPopup, $state,$ionicHistory) {
     })
  
-  .controller('HomeCtrl', function($scope,loginServices,$ionicLoading) {
+  .controller('HomeCtrl', function($scope,$state,loginServices,$ionicLoading) {
       $scope.data = {};
        $scope.login = function (){
         $ionicLoading.show({
@@ -115,6 +115,7 @@
         showDelay: 0
       });
        loginServices.login($scope.data.email,$scope.data.password);
+       $state.go('eventmenu.options');
     }
     //$ionicLoading.hide();
   })
@@ -214,13 +215,16 @@
 
   })
 
-  .controller('optionsCtrl', function($scope,$ionicHistory,$state,$ionicSlideBoxDelegate,loginServices,evaluacionServices,alumnosServices) {
+  .controller('optionsCtrl', function($q,$scope,$ionicHistory,$state,$ionicSlideBoxDelegate,loginServices,evaluacionServices,alumnosServices) {
      
     $scope.login = loginServices.loginFunction();
-    evaluacionServices.evaluacion($scope.login.usuario);
-    alumnosServices.alumnos($scope.login.usuario);
-    $state.go('eventmenu.options.states');
-   
+    evaluacionServices.asyn($scope.login.usuario).then(function (data){
+      alumnosServices.asyn($scope.login.usuario).then(function (data){
+        $state.go('eventmenu.options.states');
+      })
+    })
+    
+    //evaluacionServices.evaluacion($scope.login.usuario); 
 })
 
   .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer, $q, $http,alumnosServices,loginServices,carrerasServices,domicilioServices) {
@@ -228,28 +232,16 @@
     $scope.login = loginServices.loginFunction();
     $scope.email = $scope.login.email;
     $scope.dni = $scope.login.usuario;
-    console.log("loginServices");
-    console.log($scope.login);
-    console.log($scope.email);
-    console.log($scope.dni);
-
+ 
     $scope.alumnos = alumnosServices.alumnosFunction();
     $scope.Apellido = $scope.alumnos.apellido;
     $scope.Nombre = $scope.alumnos.nombre;
-    console.log("alumnosServices");
-    console.log($scope.alumnos);
-    console.log($scope.Apellido);
-    console.log($scope.Nombre);
 
     $scope.carreras = carrerasServices.carrerasFunction();
-    console.log("carrerasServices");
-    console.log($scope.carreras);
-    
+   
     $scope.domicilio = domicilioServices.domicilioFunction();
     $scope.Telefono = $scope.domicilio.telefono;
-    console.log("domicilioServices");
-    console.log($scope.domicilio);
-    console.log($scope.Telefono);
+    
     $scope.items = [
     {text : "No quedé preseleccionado/a"},
     {text : "Documentación fuera de término"},
@@ -303,16 +295,12 @@
   .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
    
     $scope.login = loginServices.loginFunction();
-
     $scope.evaluacion = evaluacionServices.evaluacionFunction();
-   
     $scope.alumnos = alumnosServices.alumnosFunction();
-    
-    carrerasServices.carreras($scope.alumnos.idcarrera);
 
-    domicilioServices.domicilio($scope.alumnos.idalumno);
-
-  if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
+    carrerasServices.asyn($scope.alumnos.idcarrera).then(function (data){
+    domicilioServices.asyn($scope.alumnos.idalumno).then(function(data){
+    if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
     $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&
     $scope.evaluacion.comentarioE== ''){
 
@@ -343,6 +331,8 @@ else{
   //muestra data[1].comentarioE
   $scope.commentE = $scope.evaluacion.comentarioE;
 }
+      })
+    })
 })
   .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate) {
     

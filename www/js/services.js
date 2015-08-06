@@ -7,7 +7,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     this.login = function(email, password){
         var session = $q.defer();
         session.promise.then(userSession);
-        var log = $http.get('http://192.168.1.110/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+        var log = $http.get('http://192.168.1.100/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
         .success(function(data,status, headers,config){
             $ionicLoading.hide();
             session.resolve(data);
@@ -32,7 +32,6 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
             else{
                 $ionicLoading.hide();
                 loginPut(data);
-                $state.go('eventmenu.options');
             }
         }
     };
@@ -51,36 +50,31 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     }
 }]);
 
-app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
+app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading','alumnosServices', function ($q,$http,$ionicPopup,$state,$ionicLoading,alumnosServices){
     var causa1 = null;
     var causa2 = null;
     var causa3 = null;
     var causa4 = null;
     var comentarioE = "";
 
-    this.evaluacion = function(dni){
-        var session = $q.defer();
-        session.promise.then(evaluacionSession);
-        var hola = $http.get('http://192.168.1.110/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
-        .success(function(data,status, headers,config){
-            session.resolve(data);
-
-        })
-        .error(function(data,status,headers,config){
-        });
-        function evaluacionSession(data){
-            evaluacionPut(data);
-        }
-
-        evaluacionPut = function(data){
-            causa1 = data[0].causa1;
-            causa2 = data[0].causa2;
-            causa3 = data[0].causa3;
-            causa4 = data[0].causa4;
-            comentarioE = data[0].comentarioE;
+        evaluacionPut = function(response){
+            causa1 = response.data[0].causa1;
+            causa2 = response.data[0].causa2;
+            causa3 = response.data[0].causa3;
+            causa4 = response.data[0].causa4;
+            comentarioE = response.data[0].comentarioE;
         };
 
-        this.evaluacionFunction = function(){
+    var evaluacionServices = {
+        asyn : function (dni) {
+        var promise = $http.get('http://192.168.1.100/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni).
+        then(function ( response ) {
+            evaluacionPut(response);
+            return response.data
+        });
+        return promise;
+    },
+ evaluacionFunction : function(){
             return { 
                 causa1 : causa1,
                 causa2 : causa2,
@@ -90,6 +84,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
             }
         }
     }
+return evaluacionServices;
 }]);
 
 app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
@@ -99,29 +94,24 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var idalumno = "";
     var idcarrera = "";
 
-    this.alumnos = function(dni){
-        var session = $q.defer();
-        session.promise.then(alumnosSession);
-        var hola = $http.get('http://192.168.1.110/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
-        .success(function(data,status, headers,config){
-            session.resolve(data);
-
-        })
-        .error(function(data,status,headers,config){
-        });
-        function alumnosSession(data){
-            alumnosPut(data);
-        }
-
-        alumnosPut = function(data){
-            becario = data[0].becario;
-            apellido = data[0].apellido;
-            nombre = data[0].nombre;
-            idcarrera = data[0].idcarrera;
-            idalumno = data[0].idAlumno;
+    alumnosPut = function(response){
+            becario = response.data[0].becario;
+            apellido = response.data[0].apellido;
+            nombre = response.data[0].nombre;
+            idcarrera = response.data[0].idcarrera;
+            idalumno = response.data[0].idAlumno;
         };
 
-        this.alumnosFunction = function(){
+    var alumnosServices = {
+    asyn : function(dni){
+        var promise = $http.get('http://192.168.1.100/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
+        .then(function(response){
+            alumnosPut(response);
+            return response.data;
+        });
+        return promise;
+    },
+alumnosFunction : function(){
             return { 
                 becario : becario,
                 apellido : apellido,
@@ -131,66 +121,57 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
             }
         }
     }
+return alumnosServices;
 }]);
 
 app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
 
     var carrera = "";
-
-    this.carreras = function(idcarrera){
-        var session = $q.defer();
-        session.promise.then(carrerasSession);
-        var hola = $http.get('http://192.168.1.110/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
-        .success(function(data,status, headers,config){
-            session.resolve(data);
-
-        })
-        .error(function(data,status,headers,config){
-        });
-        function carrerasSession(data){
-            carrerasPut(data);
-        }
-
-
-        carrerasPut = function(data){
-            carrera = data[0].carrera;
+     carrerasPut = function(response){
+            carrera = response.data[0].carrera;
         };
 
-        this.carrerasFunction = function(){
+
+    var carrerasServices = {
+    asyn : function(idcarrera){
+        var promise = $http.get('http://192.168.1.100/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
+        .then(function(response){
+            carrerasPut(response);
+            return response.data;
+        })
+    return promise;
+    },
+ carrerasFunction : function(){
             return { 
                 carrera : carrera
             }
         }
-    }
+    };
+    return carrerasServices;      
 }]);
 
 app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
 
     var telefono = "";
 
-    this.domicilio = function(idalumno){
-        var session = $q.defer();
-        session.promise.then(domicilioSession);
-        var hola = $http.get('http://192.168.1.110/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
-        .success(function(data,status, headers,config){
-            session.resolve(data);
-
-        })
-        .error(function(data,status,headers,config){
-        });
-        function domicilioSession(data){
-            domicilioPut(data);
-        }
-
-
-        domicilioPut = function(data){
-            telefono = data[0].telefono;
+    domicilioPut = function(response){
+            telefono = response.data[0].telefono;
         };
 
-        this.domicilioFunction = function(){
+    var domicilioServices = {
+    asyn : function(idalumno){
+        var promise = $http.get('http://192.168.1.100/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
+        .then(function(response){
+            domicilioPut(response);
+            return response.data;
+        });
+        return promise;
+    },
+    domicilioFunction : function(){
             return { 
                 telefono : telefono,
             }
         }
-    }
+    };
+    return domicilioServices;
 }]);
