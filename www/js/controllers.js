@@ -223,7 +223,12 @@
 
   })
 
-  .controller('optionsCtrl', function($scope,$ionicHistory,$ionicSlideBoxDelegate) {
+  .controller('optionsCtrl', function($scope,$ionicHistory,$state,$ionicSlideBoxDelegate,loginServices,evaluacionServices,alumnosServices) {
+     
+    $scope.login = loginServices.loginFunction();
+    evaluacionServices.evaluacion($scope.login.usuario);
+    alumnosServices.alumnos($scope.login.usuario);
+    $state.go('eventmenu.options.states');
    
 })
 
@@ -262,9 +267,10 @@
     
         })
         for (var i = $scope.itemArray.length - 1; i >= 0; i--) {
+
           $scope.motivos = $scope.motivos + ('<br>' + '*' + $scope.itemArray[i])
         };
-     
+
           $cordovaEmailComposer.isAvailable().then(function() {
        // is available
           }, function () {
@@ -293,15 +299,13 @@
   .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
   })
   .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
-    
+   
     $scope.login = loginServices.loginFunction();
 
-    evaluacionServices.evaluacion($scope.login.usuario);
     $scope.evaluacion = evaluacionServices.evaluacionFunction();
-    alumnosServices.alumnos($scope.login.usuario);
-
+   
     $scope.alumnos = alumnosServices.alumnosFunction();
-
+    
     carrerasServices.carreras($scope.alumnos.idcarrera);
 
     domicilioServices.domicilio($scope.alumnos.idalumno);
@@ -310,21 +314,17 @@
     $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&
     $scope.evaluacion.comentarioE== ''){
 
-    alumnosServices.alumnos($scope.alumno.usuario);
-
-  $scope.alumnos = alumnosServices.alumnosFunction();
-    
   if($scope.alumnos.becario==1){
   //muestra RENOVANTE
   $scope.state = "RENOVANTE";
   //muestra PUNTAJE
-  $scope.score = "Entero que muestra el puntaje";
+  //$scope.score = "Entero que muestra el puntaje";
 }
 if($scope.alumnos.becario==0){
   //muestra APROBADO
   $scope.state = "APROBADO";
   //muestra PUNTAJE
-  $scope.score = "Entero que muestra el puntaje";
+  //$scope.score = "Entero que muestra el puntaje";
 }
 }
 else{

@@ -40,7 +40,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
             else{
                 $ionicLoading.hide();
                 loginPut(data);
-                $state.go('eventmenu.options.states');
+                $state.go('eventmenu.options');
             }
         }
     };
@@ -62,10 +62,10 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
 }]);
 
 app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
-    var causa1 = "";
-    var causa2 = "";
-    var causa3 = "";
-    var causa4 = "";
+    var causa1 = null;
+    var causa2 = null;
+    var causa3 = null;
+    var causa4 = null;
     var comentarioE = "";
 
     this.evaluacion = function(dni){
@@ -111,7 +111,6 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var fechanac = "";
 
     this.alumnos = function(dni){
-
         var session = $q.defer();
         session.promise.then(alumnosSession);
         var hola = $http.get('http://192.168.1.109/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
