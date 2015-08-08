@@ -269,13 +269,15 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 })
 .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
 })
-.controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
+.controller('statesCtrl', function($scope,$ionicHistory,$q,$http,causaServices,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
   
   $scope.login = loginServices.loginFunction();
-  evaluacionServices.evaluacionServices($scope.login).then(function (data){
+  console.log($scope.login);
+  evaluacionServices.evaluacionServices($scope.login.usuario).then(function (data){
   evaluacionServices.evaluacionPut(data);
   $scope.evaluacion = evaluacionServices.evaluacionFunction();
-  alumnosServices.alumnosServices($scope.login).then(function (data){
+  console.log($scope.evaluacion);
+  alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
   alumnosServices.alumnosPut(data);
   $scope.alumnos = alumnosServices.alumnosFunction();
    if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
@@ -289,13 +291,25 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         }
       }
       else{
-        $scope.state = "FUERA DE CONCURSO";
-        $scope.cause1 = $scope.evaluacion.causa1;
-        $scope.cause2 = $scope.evaluacion.causa2;
-        $scope.cause3 = $scope.evaluacion.causa3;
-        $scope.cause4 = $scope.evaluacion.causa4;
+       $scope.state = "FUERA DE CONCURSO";
+      causaServices.causaServices().then(function (data){
+      causaServices.causaPut(data);
+      $scope.causa = causaServices.causaFunction();
+          if($scope.evaluacion.causa1!= null ){
+             $scope.cause1 = $scope.causa.causa[0];
+           }
+           if($scope.evaluacion.causa2!= null ){
+            $scope.cause2 = $scope.causa.causa[1];
+           }
+           if($scope.evaluacion.causa3!= null ){
+                $scope.cause3 =$scope.causa.causa[2];
+           }
+           if($scope.evaluacion.causa4!= null ){
+               $scope.cause4 = $scope.causa.causa[3];        
+           }
         $scope.commentE = $scope.evaluacion.comentarioE;
-      }
+      }) 
+    }
     })
   })
   })   

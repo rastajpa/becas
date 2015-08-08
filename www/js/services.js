@@ -52,6 +52,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
     };
 
     var evaluacionServices = function (dni) {
+        console.log(dni);
         return $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
     };
 
@@ -152,4 +153,27 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
     return {domicilioServices: domicilioServices,
             domicilioFunction : domicilioFunction,
             domicilioPut : domicilioPut}
+}]);
+app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
+    var causa= {};
+    
+    var causaPut = function(response){
+        for (var i = response.data.length - 1; i >= 0; i--) {
+            causa[i] = response.data[i].causa;
+        };
+    };
+    
+    var causaServices = function(){
+            return $http.get('http://localhost/becas/web/causa')
+        };
+           
+    var causaFunction = function(){
+            return { 
+                causa : causa
+            }
+        };
+    
+    return {causaServices: causaServices,
+           causaFunction : causaFunction,
+            causaPut :causaPut}
 }]);
