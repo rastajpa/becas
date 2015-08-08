@@ -58,6 +58,8 @@ class CarrerasSearch extends Carreras
         $query->andFilterWhere([
             'idfacultad' => $this->idfacultad,
             'idcarrera' => $this->idcarrera,
+            'carrera', $this->carrera,
+            'plan', $this->plan,
             'duracion' => $this->duracion,
             'idnivel' => $this->idnivel,
             'anio1' => $this->anio1,
@@ -69,8 +71,7 @@ class CarrerasSearch extends Carreras
             'anio7' => $this->anio7,
         ]);
 
-        $query->andFilterWhere(['like', 'carrera', $this->carrera])
-            ->andFilterWhere(['like', 'plan', $this->plan]);
+        $query->andFilterWhere(['like', 'idcarrera',$this->idcarrera]);
 
         return $dataProvider;
     }

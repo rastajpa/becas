@@ -58,11 +58,14 @@ class AlumnosSearch extends Alumnos
 
         $query->andFilterWhere([
             'idalumno' => $this->idalumno,
-            'dni' => $this->dni,
+            'apellido', $this->apellido,
+            'nombre', $this->nombre,
             'cuil' => $this->cuil,
             'fechanac' => $this->fechanac,
             'idsexo' => $this->idsexo,
             'idsalud' => $this->idsalud,
+            'nacion', $this->nacion,
+            'observaciones', $this->observaciones,
             'discapacidad' => $this->discapacidad,
             'originario' => $this->originario,
             'grufam' => $this->grufam,
@@ -79,10 +82,7 @@ class AlumnosSearch extends Alumnos
             'idconvocatoria' => $this->idconvocatoria,
         ]);
 
-        $query->andFilterWhere(['like', 'apellido', $this->apellido])
-            ->andFilterWhere(['like', 'nombre', $this->nombre])
-            ->andFilterWhere(['like', 'nacion', $this->nacion])
-            ->andFilterWhere(['like', 'observaciones', $this->observaciones]);
+        $query->andFilterWhere(['=', 'dni', $this->dni]);
 
         return $dataProvider;
     }

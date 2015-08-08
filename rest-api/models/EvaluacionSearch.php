@@ -59,6 +59,9 @@ class EvaluacionSearch extends Evaluacion
         $query->andFilterWhere([
             'idevaluacion' => $this->idevaluacion,
             'dniE' => $this->dniE,
+            'apellidoE', $this->apellidoE,
+            'nombreE', $this->nombreE,
+            'comentarioE', $this->comentarioE,
             'montotalE' => $this->montotalE,
             'grufamE' => $this->grufamE,
             'idpropietarioE' => $this->idpropietarioE,
@@ -73,9 +76,7 @@ class EvaluacionSearch extends Evaluacion
             'userE' => $this->userE,
         ]);
 
-        $query->andFilterWhere(['like', 'apellidoE', $this->apellidoE])
-            ->andFilterWhere(['like', 'nombreE', $this->nombreE])
-            ->andFilterWhere(['like', 'comentarioE', $this->comentarioE]);
+        $query->andFilterWhere(['=', 'dniE', $this->dniE]);
 
         return $dataProvider;
     }

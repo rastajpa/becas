@@ -13,4 +13,10 @@ use yii\rest\ActiveController;
 class AlumnosController extends ActiveController
 {
     public $modelClass = 'app\models\Alumnos';
+
+ public function prepareDataProvider() {
+
+        $searchModel = new \app\models\AlumnosSearch();    
+        return $searchModel->search(\Yii::$app->request->queryParams);
+    }
 }
