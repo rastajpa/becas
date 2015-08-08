@@ -1,57 +1,40 @@
 var app = angular.module('becas.services', ['ionic','ngCordova']);
 app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
+    
     var usuario = "";
     var email="";
     var conectado = false;
-    this.logout = function(){
+    
+
+    var logout = function(){
         usuario = "";
         email = "";
         conectado = false;
         $state.go('eventmenu.home');
     }
-    this.login = function(email, password){
-        var session = $q.defer();
-        session.promise.then(userSession);
-        var log = $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
-        .success(function(data,status, headers,config){
-            $ionicLoading.hide();
-            session.resolve(data);
-        })
-        .error(function(data,status,headers,config){
-            $ionicLoading.hide();
-            $ionicPopup.alert({
-                title: 'ERROR '+ status + '!',
-                template: 'Tiempo de espera agotado. Por favor revise su conexión a internet y vuelva a intentarlo.'
-            });
-        });
-        function userSession(data){
-            $ionicLoading.hide();
-            if(data.length == 0){
-                $ionicPopup.alert({
-                    title: 'Fallo el ingreso',
-                    template: 'Por favor revise sus datos'
-                });
-            }
-            else{
-                $ionicLoading.hide();
-                loginPut(data);
-                $state.go('eventmenu.options');
-            }
-        }
-    };
-    loginPut = function(data){
-        usuario = data[0].usuario;
-        email = data[0].email;
+
+    var loginPut = function(response){
+        usuario = response.data[0].usuario;
+        email = response.data[0].email;
         conectado = true;
 
     };
-    this.loginFunction = function(){
+    var loginServices = function(email, password){
+        return $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+        };
+    
+    var loginFunction = function(){
         return { 
             usuario : usuario,
             email : email,
             conectado : conectado
-        }
-    }
+        };
+    };
+
+    return {loginServices : loginServices,
+            loginPut : loginPut,
+            loginFunction : loginFunction,
+            logout : logout}
 }]);
 app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var causa1 = null;
@@ -60,7 +43,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
     var causa4 = null;
     var comentarioE = "";
 
-    evaluacionPut = function(response){
+    var evaluacionPut = function(response){
         causa1 = response.data[0].causa1;
         causa2 = response.data[0].causa2;
         causa3 = response.data[0].causa3;
@@ -68,25 +51,22 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
         comentarioE = response.data[0].comentarioE;
     };
 
-    var evaluacionServices = {
-        asyn : function (dni) {
-            var promise = $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni).
-            then(function ( response ) {
-                evaluacionPut(response);
-            });
-            return promise;
-        },
-        evaluacionFunction : function(){
+    var evaluacionServices = function (dni) {
+        return $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
+    };
+
+    var evaluacionFunction = function(){
             return { 
                 causa1 : causa1,
                 causa2 : causa2,
                 causa3 : causa3,
                 causa4 : causa4,
                 comentarioE : comentarioE
-            }
-        }
-    };
-    return evaluacionServices;
+            };};
+
+    return {evaluacionServices : evaluacionServices,
+            evaluacionPut : evaluacionPut,
+            evaluacionFunction : evaluacionFunction}
 }]);
 app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var becario = "";
@@ -96,23 +76,20 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var idcarrera = ""
     var fechanac = "";
 
-    alumnosPut = function(response){
+    var alumnosPut = function(response){
         becario = response.data[0].becario;
         apellido = response.data[0].apellido;
         nombre = response.data[0].nombre;
         idcarrera = response.data[0].idcarrera;
         idalumno = response.data[0].idAlumno;
+        return true;
     };
 
-    var alumnosServices = {
-        asyn : function(dni){
-            var promise = $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
-            .then(function(response){
-                alumnosPut(response);
-            });
-            return promise;
-        },
-        alumnosFunction : function(){
+    var alumnosServices = function(dni) {
+            return $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
+        };
+
+    var alumnosFunction = function(){
             return { 
                 becario : becario,
                 apellido : apellido,
@@ -121,33 +98,31 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
                 idalumno : idalumno,
                 fechanac : fechanac
             }
-        }
-    };
-    return alumnosServices;
+        };
+    return {alumnosServices : alumnosServices,
+            alumnosPut : alumnosPut,
+            alumnosFunction : alumnosFunction}
 }]);
 app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var carrera = "";
 
-    carrerasPut = function(response){
+    var carrerasPut = function(response){
         carrera = response.data[0].carrera;
     };
 
-    var carrerasServices = {
-        asyn : function(idcarrera){
-            var promise = $http.get('http://localhost/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
-            .then(function(response){
-                carrerasPut(response);
-                return response.data;
-            })
-            return promise;
-        },
-        carrerasFunction : function(){
+    var carrerasServices =  function(idcarrera){
+            return $http.get('http://localhost/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
+           };
+        
+    var carrerasFunction = function(){
             return { 
                 carrera : carrera
             }
         }
-    }
-    return carrerasServices;      
+    
+    return {carrerasServices : carrerasServices,
+            carrerasPut : carrerasPut,
+            carrerasFunction : carrerasFunction}      
 }]);
 app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var telefono = "";
@@ -156,20 +131,15 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
     var piso = "";
     var dpto = "";
 
-    domicilioPut = function(response){
+    var domicilioPut = function(response){
         telefono = response.data[0].telefono;
     };
 
-    var domicilioServices = {
-        asyn : function(idalumno){
-            var promise = $http.get('http://localhost/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
-            .then(function(response){
-                domicilioPut(response);
-                return response.data;
-            });
-            return promise;
-        },
-        domicilioFunction : function(){
+    var domicilioServices = function(idalumno){
+            return $http.get('http://localhost/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
+        };
+           
+    var domicilioFunction = function(){
             return { 
                 telefono : telefono,
                 calle : calle,
@@ -177,7 +147,9 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
                 piso : piso,
                 dpto : dpto
             }
-        }
-    };
-    return domicilioServices;
+        };
+    
+    return {domicilioServices: domicilioServices,
+            domicilioFunction : domicilioFunction,
+            domicilioPut : domicilioPut}
 }]);
