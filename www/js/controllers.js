@@ -106,7 +106,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     $scope.login = loginServices.loginFunction();
   }
 })
-.controller('HomeCtrl', function($scope,$state,loginServices,$ionicLoading) {
+.controller('HomeCtrl', function($scope,$state,$ionicPopup,loginServices,$ionicLoading) {
   $scope.data = {};
   $scope.login = function (){
     $ionicLoading.show({
@@ -117,22 +117,22 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       showDelay: 0
     });
     loginServices.loginServices($scope.data.email,$scope.data.password).then(function(data){
-      //$ionicLoading.hide();
-            if(data.length == 0){
-                $ionicPopup.alert({
-                    title: 'Fallo el ingreso',
-                    template: 'Por favor revise sus datos'
-                });
-            }
-            else{
-                $ionicLoading.hide();
-                loginServices.loginPut(data);                
-                $state.go('eventmenu.options.states');               
-            }
+      if(data.data.length == 0){
+        $ionicLoading.hide();
+        $ionicPopup.alert({
+          title: 'Fallo el ingreso',
+          template: 'Por favor revise sus datos. Si todavía no tiene un usuario y una contraseña registrese en el sitio web: www.becasuniversitarias.unt.edu.ar'
+        });
+      }
+      else{
+        $ionicLoading.hide();
+        loginServices.loginPut(data);                
+        $state.go('eventmenu.options.states');               
+      }
     });
   }
 })
-.controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices) {
+.controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$state,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices) {
   $ionicPopover.fromTemplateUrl('pages/popover.html', {
     scope: $scope
   }).then(function(popover) {
@@ -166,6 +166,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   });
   $scope.logout = function () {
     loginServices.logout();
+    $state.go('eventmenu.home');
     $scope.closePopover();
   }
 })
@@ -211,7 +212,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   }
 })
 .controller('optionsCtrl', function($q,$scope,$ionicHistory,$state,$ionicSlideBoxDelegate,loginServices,evaluacionServices,alumnosServices) { 
-  
+
 })
 .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer, $q, $http,alumnosServices,loginServices,carrerasServices,domicilioServices) {
   $scope.login = loginServices.loginFunction();
@@ -222,65 +223,63 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   $scope.Nombre = $scope.alumnos.nombre;
   carrerasServices.carrerasServices($scope.alumnos.idcarrera).then(function (data){
     carrerasServices.carrerasPut(data);
-  domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
-    domicilioServices.domicilioPut(data);
-  $scope.carreras = carrerasServices.carrerasFunction();
-  $scope.domicilio = domicilioServices.domicilioFunction();
-  $scope.Telefono = $scope.domicilio.telefono;
-  $scope.items = [
-  {text : "No quedé preseleccionado/a"},
-  {text : "Documentación fuera de término"},
-  {text : "Inscripción fuera de término"},
-  {text : "Excepción a los requisitos (Promedio, Ingresos, Permanencia, Regularidad)"},
-  {text : "Documentación faltante o incorrecta"},
-  {text : "Revisión de la Evaluación"}
-  ]
-  $scope.mot = {otros :""};
-  $scope.sendEmail= function() {
-    $scope.itemArray = [];
-    $scope.motivos = "";
-    angular.forEach($scope.items, function(item){
-      if (!!item.selected) $scope.itemArray.push(item.text);
+    domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
+      domicilioServices.domicilioPut(data);
+      $scope.carreras = carrerasServices.carrerasFunction();
+      $scope.domicilio = domicilioServices.domicilioFunction();
+      $scope.Telefono = $scope.domicilio.telefono;
+      $scope.items = [
+      {text : "No quedé preseleccionado/a"},
+      {text : "Documentación fuera de término"},
+      {text : "Inscripción fuera de término"},
+      {text : "Excepción a los requisitos (Promedio, Ingresos, Permanencia, Regularidad)"},
+      {text : "Documentación faltante o incorrecta"},
+      {text : "Revisión de la Evaluación"}
+      ]
+      $scope.mot = {otros :""};
+      $scope.sendEmail= function() {
+        $scope.itemArray = [];
+        $scope.motivos = "";
+        angular.forEach($scope.items, function(item){
+          if (!!item.selected) $scope.itemArray.push(item.text);
+        })
+        for (var i = $scope.itemArray.length - 1; i >= 0; i--) {
+          $scope.motivos = $scope.motivos + ('<br>' + '*' + $scope.itemArray[i])
+        };
+        $cordovaEmailComposer.isAvailable().then(function() {
+        }, function () {
+          alert("No puede usar este servicio debido a que su disposivo no lo soporta. Por favor realice el reclamo a becascomunic@gmail.com")
+        });
+        var email = {
+          to: 'becascomunic@gmail.com',
+          subject: 'Reclamos',
+          body: "Apellido y Nombre: " + $scope.Apellido + ', ' + $scope.Nombre + '<br>' +
+          "DNI: " + $scope.dni + '<br>' +
+          "Carrera o Escuela: " + $scope.carreras.carrera + '<br>' +
+          "Teléfono: " + $scope.Telefono + '<br>' +
+          "Email: " + $scope.email + '<br>' +
+          "Motivo/s: " + $scope.motivos + '<br>' + 
+          "Otro motivo: " + $scope.mot.otros,
+          isHtml: true
+        };
+        $cordovaEmailComposer.open(email).then(null, function () {
+        });
+      }
     })
-    for (var i = $scope.itemArray.length - 1; i >= 0; i--) {
-      $scope.motivos = $scope.motivos + ('<br>' + '*' + $scope.itemArray[i])
-    };
-    $cordovaEmailComposer.isAvailable().then(function() {
-    }, function () {
-      alert("No puede usar este servicio debido a que su disposivo no lo soporta. Por favor realice el reclamo a becascomunic@gmail.com")
-    });
-    var email = {
-      to: 'becascomunic@gmail.com',
-      subject: 'Reclamos',
-      body: "Apellido y Nombre: " + $scope.Apellido + ', ' + $scope.Nombre + '<br>' +
-      "DNI: " + $scope.dni + '<br>' +
-      "Carrera o Escuela: " + $scope.carreras.carrera + '<br>' +
-      "Teléfono: " + $scope.Telefono + '<br>' +
-      "Email: " + $scope.email + '<br>' +
-      "Motivo/s: " + $scope.motivos + '<br>' + 
-      "Otro motivo: " + $scope.mot.otros,
-      isHtml: true
-    };
-    $cordovaEmailComposer.open(email).then(null, function () {
-    });
-  }
-})
 })
 })
 .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
 })
 .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,causaServices,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
-  
+
   $scope.login = loginServices.loginFunction();
-  console.log($scope.login);
   evaluacionServices.evaluacionServices($scope.login.usuario).then(function (data){
-  evaluacionServices.evaluacionPut(data);
-  $scope.evaluacion = evaluacionServices.evaluacionFunction();
-  console.log($scope.evaluacion);
-  alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
-  alumnosServices.alumnosPut(data);
-  $scope.alumnos = alumnosServices.alumnosFunction();
-   if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
+    evaluacionServices.evaluacionPut(data);
+    $scope.evaluacion = evaluacionServices.evaluacionFunction();
+    alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
+      alumnosServices.alumnosPut(data);
+      $scope.alumnos = alumnosServices.alumnosFunction();
+      if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
         $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&
         $scope.evaluacion.comentarioE== ''){
         if($scope.alumnos.becario==1){
@@ -291,45 +290,41 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         }
       }
       else{
-       $scope.state = "FUERA DE CONCURSO";
-      causaServices.causaServices().then(function (data){
-      causaServices.causaPut(data);
-      $scope.causa = causaServices.causaFunction();
+        $scope.state = "FUERA DE CONCURSO";
+        causaServices.causaServices().then(function (data){
+          causaServices.causaPut(data);
+          $scope.causa = causaServices.causaFunction();
           if($scope.evaluacion.causa1!= null ){
-             $scope.cause1 = $scope.causa.causa[0];
-           }
-           if($scope.evaluacion.causa2!= null ){
+            $scope.cause1 = $scope.causa.causa[0];
+          }
+          if($scope.evaluacion.causa2!= null ){
             $scope.cause2 = $scope.causa.causa[1];
-           }
-           if($scope.evaluacion.causa3!= null ){
-                $scope.cause3 =$scope.causa.causa[2];
-           }
-           if($scope.evaluacion.causa4!= null ){
-               $scope.cause4 = $scope.causa.causa[3];        
-           }
-        $scope.commentE = $scope.evaluacion.comentarioE;
-      }) 
-    }
+          }
+          if($scope.evaluacion.causa3!= null ){
+            $scope.cause3 =$scope.causa.causa[2];
+          }
+          if($scope.evaluacion.causa4!= null ){
+            $scope.cause4 = $scope.causa.causa[3];        
+          }
+          $scope.commentE = $scope.evaluacion.comentarioE;
+        }) 
+      }
     })
-  })
-  })   
+})
+})   
 .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices) {
   $scope.login = loginServices.loginFunction();
   $scope.alumnos = alumnosServices.alumnosFunction();
   carrerasServices.carrerasServices($scope.alumnos.idcarrera).then(function (data){
     carrerasServices.carrerasPut(data);
-  domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
-    domicilioServices.domicilioPut(data);
-  $scope.domicilio = domicilioServices.domicilioFunction();
-  $scope.carrera = carrerasServices.carrerasFunction();
-  console.log(carrerasServices.carrerasFunction());
-  console.log(alumnosServices.alumnosFunction());
-  console.log(domicilioServices.domicilioFunction());
-  console.log(loginServices.loginFunction());
-  $scope.goBack = function () {
-    $ionicHistory.goBack();
-  }
-})
-})
+    domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
+      domicilioServices.domicilioPut(data);
+      $scope.domicilio = domicilioServices.domicilioFunction();
+      $scope.carrera = carrerasServices.carrerasFunction();
+      $scope.goBack = function () {
+        $ionicHistory.goBack();
+      }
+    })
+  })
 });
 
