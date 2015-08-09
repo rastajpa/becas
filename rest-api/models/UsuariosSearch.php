@@ -62,8 +62,8 @@ class UsuariosSearch extends Usuarios
             'fechaserver' => $this->fechaserver,
         ]);
 
-        $query->andFilterWhere(['like', 'clave', $this->clave])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['=', 'clave', $this->clave])
+            ->andFilterWhere(['=', 'email', $this->email]);
         
         if($this->email!=''&&$this->clave!=''){
         return $dataProvider;}

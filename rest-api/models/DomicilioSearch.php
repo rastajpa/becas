@@ -57,9 +57,13 @@ class DomicilioSearch extends Domicilio
 
         $query->andFilterWhere([
             'iddomicilio' => $this->iddomicilio,
-            'idalumno' => $this->idalumno,
             'numcasa' => $this->numcasa,
+            'calle', $this->calle,
             'piso' => $this->piso,
+            'dpto', $this->dpto,
+            'barrio', $this->barrio,
+            'depto', $this->depto,
+            'telefono', $this->telefono,
             'idlocalidad' => $this->idlocalidad,
             'iddistancia' => $this->iddistancia,
             'codpost' => $this->codpost,
@@ -69,11 +73,7 @@ class DomicilioSearch extends Domicilio
             'convive' => $this->convive,
         ]);
 
-        $query->andFilterWhere(['like', 'calle', $this->calle])
-            ->andFilterWhere(['like', 'dpto', $this->dpto])
-            ->andFilterWhere(['like', 'barrio', $this->barrio])
-            ->andFilterWhere(['like', 'depto', $this->depto])
-            ->andFilterWhere(['like', 'telefono', $this->telefono]);
+        $query->andFilterWhere(['=', 'idalumno', $this->idalumno]);
 
         return $dataProvider;
     }

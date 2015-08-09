@@ -13,4 +13,10 @@ use yii\rest\ActiveController;
 class CarrerasController extends ActiveController
 {
     public $modelClass = 'app\models\Carreras';
+
+     public function prepareDataProvider() {
+
+        $searchModel = new \app\models\CarrerasSearch();    
+        return $searchModel->search(\Yii::$app->request->queryParams);
+    }
 }

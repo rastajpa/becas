@@ -13,4 +13,19 @@ use yii\rest\ActiveController;
 class EvaluacionController extends ActiveController
 {
     public $modelClass = 'app\models\Evaluacion';
+
+
+public function actions() {
+
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        return $actions;
+    }
+
+    public function prepareDataProvider() {
+
+        $searchModel = new \app\models\EvaluacionSearch();    
+        return $searchModel->search(\Yii::$app->request->queryParams);
+    }
 }

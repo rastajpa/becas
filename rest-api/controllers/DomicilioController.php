@@ -13,4 +13,10 @@ use yii\rest\ActiveController;
 class DomicilioController extends ActiveController
 {
     public $modelClass = 'app\models\Domicilio';
+
+     public function prepareDataProvider() {
+
+        $searchModel = new \app\models\DomicilioSearch();    
+        return $searchModel->search(\Yii::$app->request->queryParams);
+    }
 }
