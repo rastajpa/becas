@@ -100,13 +100,13 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   })
   $urlRouterProvider.otherwise("/event/home");
 })
-.controller('MenuCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory,loginServices) {
+.controller('MenuCtrl', function($scope, $q, $http, $ionicPopup, $state, $ionicHistory, loginServices) {
   $scope.conectado = false;
   $scope.userConnected = function () {
     $scope.login = loginServices.loginFunction();
   }
 })
-.controller('HomeCtrl', function($scope,loginServices,$ionicLoading) {
+.controller('HomeCtrl', function($scope, loginServices, $ionicLoading) {
   $scope.data = {};
   $scope.login = function (){
     $ionicLoading.show({
@@ -116,10 +116,10 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       maxWidth: 200,
       showDelay: 0
     });
-    loginServices.login($scope.data.email,$scope.data.password);
+    loginServices.login($scope.data.email, $scope.data.password);
   }
 })
-.controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices) {
+.controller('MainCtrl', function($scope, $ionicSideMenuDelegate, $ionicNavBarDelegate, $ionicHistory, $ionicPopover, loginServices) {
   $ionicPopover.fromTemplateUrl('pages/popover.html', {
     scope: $scope
   }).then(function(popover) {
@@ -156,9 +156,9 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     $scope.closePopover();
   }
 })
-.controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
+.controller('newsCtrl', function($scope, $ionicSideMenuDelegate) {
 })
-.controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading, $timeout, $ionicPopup,$cordovaEmailComposer) {
+.controller('aboutCtrl', function($scope, $ionicModal, $ionicLoading, $ionicPopup, $cordovaEmailComposer) {
   $ionicModal.fromTemplateUrl('pages/map.html', {
     scope: $scope
   }).then(function(modal) {
@@ -198,13 +198,13 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   }
 })
 
-.controller('optionsCtrl', function($scope,$ionicHistory,$state,$ionicSlideBoxDelegate,loginServices,evaluacionServices,alumnosServices) {
+.controller('optionsCtrl', function($scope, $ionicHistory, $state, loginServices, evaluacionServices, alumnosServices) {
   $scope.login = loginServices.loginFunction();
   evaluacionServices.evaluacion($scope.login.usuario);
-  alumnosServices.alumnos($scope.login.usuario);
-  $state.go('eventmenu.options.states');
+  /*alumnosServices.alumnos($scope.login.usuario);
+  $state.go('eventmenu.options.states');*/
 })
-.controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer, $q, $http,alumnosServices,loginServices,carrerasServices,domicilioServices) {
+.controller('claimsCtrl', function($scope, $ionicHistory, $cordovaEmailComposer, $q, $http, alumnosServices, loginServices, carrerasServices, domicilioServices) {
   $scope.login = loginServices.loginFunction();
   $scope.email = $scope.login.email;
   $scope.dni = $scope.login.usuario;
@@ -252,11 +252,11 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     });
   }
 })
-.controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
+.controller('paymentsCtrl', function($scope, $ionicHistory, $q, $http) {
 })
-.controller('statesCtrl', function($scope,$ionicHistory,$q,$http,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
-  $scope.login = loginServices.loginFunction();
+.controller('statesCtrl', function($scope, $ionicHistory, $q, $http, loginServices, evaluacionServices, alumnosServices, carrerasServices, domicilioServices) {
   $scope.evaluacion = evaluacionServices.evaluacionFunction();
+  console.log($scope.evaluacion);
   $scope.alumnos = alumnosServices.alumnosFunction();
   carrerasServices.carreras($scope.alumnos.idcarrera);
   domicilioServices.domicilio($scope.alumnos.idalumno);
@@ -279,7 +279,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     $scope.commentE = $scope.evaluacion.comentarioE;
   }
 })
-.controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices) {
+.controller('userCtrl', function($scope, $ionicHistory, $ionicNavBarDelegate, loginServices, alumnosServices, domicilioServices, carrerasServices) {
   $scope.login = loginServices.loginFunction();
   $scope.alumnos = alumnosServices.alumnosFunction();
   $scope.domicilio = domicilioServices.domicilioFunction();
