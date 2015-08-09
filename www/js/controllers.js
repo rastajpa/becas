@@ -121,7 +121,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         $ionicLoading.hide();
         $ionicPopup.alert({
           title: 'Fallo el ingreso',
-          template: 'Por favor revise sus datos. Si todavía no tiene un usuario y una contraseña registrese en el sitio web: www.becasuniversitarias.unt.edu.ar'
+          template: 'Por favor revise sus datos. Si todavía no tiene un usuario y una contraseña regístrese en el sitio web: www.becasuniversitarias.unt.edu.ar'
         });
       }
       else{
@@ -212,7 +212,6 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   }
 })
 .controller('optionsCtrl', function($q,$scope,$ionicHistory,$state,$ionicSlideBoxDelegate,loginServices,evaluacionServices,alumnosServices) { 
-
 })
 .controller('claimsCtrl', function($scope,$ionicHistory, $cordovaEmailComposer, $q, $http,alumnosServices,loginServices,carrerasServices,domicilioServices) {
   $scope.login = loginServices.loginFunction();
@@ -266,12 +265,11 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         });
       }
     })
-})
+  })
 })
 .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
 })
 .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,causaServices,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
-
   $scope.login = loginServices.loginFunction();
   evaluacionServices.evaluacionServices($scope.login.usuario).then(function (data){
     evaluacionServices.evaluacionPut(data);
@@ -310,7 +308,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         }) 
       }
     })
-})
+  })
 })   
 .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices) {
   $scope.login = loginServices.loginFunction();
