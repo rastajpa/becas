@@ -23,6 +23,7 @@ use Yii;
  * @property integer $causa3
  * @property integer $causa4
  * @property string $comentarioE
+ * @property string $puntajeE
  * @property integer $userE
  */
 class Evaluacion extends \yii\db\ActiveRecord
@@ -41,9 +42,9 @@ class Evaluacion extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['dniE', 'comentarioE', 'userE'], 'required'],
+            [['dniE', 'comentarioE', 'puntajeE', 'userE'], 'required'],
             [['dniE', 'grufamE', 'idpropietarioE', 'idocupacionE', 'idinstruccionE', 'idsaludE', 'iddistanciaE', 'causa1', 'causa2', 'causa3', 'causa4', 'userE'], 'integer'],
-            [['montotalE'], 'number'],
+            [['montotalE', 'puntajeE'], 'number'],
             [['apellidoE'], 'string', 'max' => 45],
             [['nombreE'], 'string', 'max' => 50],
             [['comentarioE'], 'string', 'max' => 150],
@@ -73,6 +74,7 @@ class Evaluacion extends \yii\db\ActiveRecord
             'causa3' => 'Causa3',
             'causa4' => 'Causa4',
             'comentarioE' => 'Comentario E',
+            'puntajeE' => 'Puntaje E',
             'userE' => 'User E',
         ];
     }
