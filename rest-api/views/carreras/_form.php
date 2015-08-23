@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'duracion')->textInput() ?>
 
-    <?= $form->field($model, 'idnivel')->textInput() ?>
+    <?= $form->field($model, 'idnivelC')->textInput() ?>
 
     <?= $form->field($model, 'anio1')->textInput() ?>
 

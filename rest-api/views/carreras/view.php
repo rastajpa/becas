@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'carrera',
             'plan',
             'duracion',
-            'idnivel',
+            'idnivelC',
             'anio1',
             'anio2',
             'anio3',

@@ -14,7 +14,16 @@ class CarrerasController extends ActiveController
 {
     public $modelClass = 'app\models\Carreras';
 
-     public function prepareDataProvider() {
+
+public function actions() {
+
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        return $actions;
+    }
+
+    public function prepareDataProvider() {
 
         $searchModel = new \app\models\CarrerasSearch();    
         return $searchModel->search(\Yii::$app->request->queryParams);

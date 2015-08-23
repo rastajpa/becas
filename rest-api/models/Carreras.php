@@ -12,7 +12,7 @@ use Yii;
  * @property string $carrera
  * @property string $plan
  * @property integer $duracion
- * @property integer $idnivel
+ * @property integer $idnivelC
  * @property integer $anio1
  * @property integer $anio2
  * @property integer $anio3
@@ -37,8 +37,8 @@ class Carreras extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idfacultad', 'carrera', 'plan', 'duracion', 'idnivel', 'anio1', 'anio2', 'anio3', 'anio4', 'anio5', 'anio6', 'anio7'], 'required'],
-            [['idfacultad', 'duracion', 'idnivel', 'anio1', 'anio2', 'anio3', 'anio4', 'anio5', 'anio6', 'anio7'], 'integer'],
+            [['idfacultad', 'carrera', 'plan', 'duracion', 'idnivelC', 'anio1', 'anio2', 'anio3', 'anio4', 'anio5', 'anio6', 'anio7'], 'required'],
+            [['idfacultad', 'duracion', 'idnivelC', 'anio1', 'anio2', 'anio3', 'anio4', 'anio5', 'anio6', 'anio7'], 'integer'],
             [['carrera'], 'string', 'max' => 200],
             [['plan'], 'string', 'max' => 50]
         ];
@@ -55,7 +55,7 @@ class Carreras extends \yii\db\ActiveRecord
             'carrera' => 'Carrera',
             'plan' => 'Plan',
             'duracion' => 'Duracion',
-            'idnivel' => 'Idnivel',
+            'idnivelC' => 'Idnivel C',
             'anio1' => 'Anio1',
             'anio2' => 'Anio2',
             'anio3' => 'Anio3',

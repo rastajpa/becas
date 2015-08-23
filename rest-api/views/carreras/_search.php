@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'duracion') ?>
 
-    <?php // echo $form->field($model, 'idnivel') ?>
+    <?php // echo $form->field($model, 'idnivelC') ?>
 
     <?php // echo $form->field($model, 'anio1') ?>
 

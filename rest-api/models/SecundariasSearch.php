@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Carreras;
+use app\models\Secundarias;
 
 /**
- * CarrerasSearch represents the model behind the search form about `app\models\Carreras`.
+ * SecundariasSearch represents the model behind the search form about `app\models\Secundarias`.
  */
-class CarrerasSearch extends Carreras
+class SecundariasSearch extends Secundarias
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class CarrerasSearch extends Carreras
     public function rules()
     {
         return [
-            [['idfacultad', 'idcarrera', 'duracion', 'idnivelC', 'anio1', 'anio2', 'anio3', 'anio4', 'anio5', 'anio6', 'anio7'], 'integer'],
-            [['carrera', 'plan'], 'safe'],
+            [['idsec', 'dni', 'escuela', 'resultado'], 'integer'],
+            [['apellido', 'nombre', 'causa'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class CarrerasSearch extends Carreras
      */
     public function search($params)
     {
-        $query = Carreras::find();
+        $query = Secundarias::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -56,21 +56,13 @@ class CarrerasSearch extends Carreras
         }
 
         $query->andFilterWhere([
-            'idfacultad' => $this->idfacultad,
-            'idcarrera' => $this->idcarrera,
-            'duracion' => $this->duracion,
-            'idnivelC' => $this->idnivelC,
-            'anio1' => $this->anio1,
-            'anio2' => $this->anio2,
-            'anio3' => $this->anio3,
-            'anio4' => $this->anio4,
-            'anio5' => $this->anio5,
-            'anio6' => $this->anio6,
-            'anio7' => $this->anio7,
+            'idsec' => $this->idsec,
+            'dni' => $this->dni,
+            'escuela' => $this->escuela,
+            'resultado' => $this->resultado,
         ]);
 
-        $query->andFilterWhere(['like', 'carrera', $this->carrera])
-            ->andFilterWhere(['like', 'plan', $this->plan]);
+        $query->andFilterWhere(['=', 'dni' , $this->dni]);
 
         return $dataProvider;
     }

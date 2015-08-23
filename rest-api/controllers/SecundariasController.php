@@ -13,4 +13,19 @@ use yii\rest\ActiveController;
 class SecundariasController extends ActiveController
 {
     public $modelClass = 'app\models\Secundarias';
+
+
+public function actions() {
+
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        return $actions;
+    }
+
+    public function prepareDataProvider() {
+
+        $searchModel = new \app\models\SecundariasSearch();    
+        return $searchModel->search(\Yii::$app->request->queryParams);
+    }
 }

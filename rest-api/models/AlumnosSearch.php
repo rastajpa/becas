@@ -83,7 +83,7 @@ class AlumnosSearch extends Alumnos
         ]);
 
         $query->andFilterWhere(['=', 'dni', $this->dni]);
-
+        
         return $dataProvider;
     }
 }
