@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\SearchNoticias */
+/* @var $model app\models\NoticiasSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
@@ -22,6 +22,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'imagen') ?>
 
     <?= $form->field($model, 'fecha') ?>
+
+    <?= $form->field($model, 'link') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
