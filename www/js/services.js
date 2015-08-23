@@ -161,3 +161,12 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         causaPut :causaPut
     }
     }]);
+
+app.service('newsServices', ['$q','$http', function ($q,$http){
+    var news = function(){
+        return $http.get('http://localhost/becas/web/noticias')
+    };
+    return {
+        news: news
+    }
+    }]);

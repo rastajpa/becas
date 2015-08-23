@@ -170,7 +170,13 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     $scope.closePopover();
   }
 })
-.controller('newsCtrl', function($scope,$ionicSideMenuDelegate) {
+.controller('newsCtrl', function($scope,newsServices) {
+  $scope.news = []
+  newsServices.news().then(function (data){
+        
+          $scope.news = data.data;
+           console.log($scope.news);
+        }) 
 })
 .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading, $timeout, $ionicPopup,$cordovaEmailComposer) {
   $ionicModal.fromTemplateUrl('pages/map.html', {
