@@ -11,6 +11,7 @@ use Yii;
  * @property string $titulo
  * @property string $imagen
  * @property string $fecha
+ * @property string $link
  */
 class Noticias extends \yii\db\ActiveRecord
 {
@@ -28,10 +29,10 @@ class Noticias extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idnoticia', 'titulo', 'imagen', 'fecha'], 'required'],
+            [['idnoticia', 'titulo', 'imagen', 'fecha', 'link'], 'required'],
             [['idnoticia'], 'integer'],
             [['fecha'], 'safe'],
-            [['titulo', 'imagen'], 'string', 'max' => 200]
+            [['titulo', 'imagen', 'link'], 'string', 'max' => 200]
         ];
     }
 
@@ -45,6 +46,7 @@ class Noticias extends \yii\db\ActiveRecord
             'titulo' => 'Titulo',
             'imagen' => 'Imagen',
             'fecha' => 'Fecha',
+            'link' => 'Link',
         ];
     }
 }

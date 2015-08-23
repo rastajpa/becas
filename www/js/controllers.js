@@ -283,6 +283,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
       alumnosServices.alumnosPut(data);
       $scope.alumnos = alumnosServices.alumnosFunction();
+      console.log($scope.alumnos);
       if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
         $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&
         $scope.evaluacion.comentarioE== ''){

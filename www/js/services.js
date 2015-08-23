@@ -67,12 +67,14 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var idalumno = "";
     var idcarrera = ""
     var fechanac = "";
+    var idnivel = "";
     var alumnosPut = function(response){
         becario = response.data[0].becario;
         apellido = response.data[0].apellido;
         nombre = response.data[0].nombre;
         idcarrera = response.data[0].idcarrera;
         idalumno = response.data[0].idAlumno;
+        idnivel = response.data[0].idnivel;
         return true;
     };
     var alumnosServices = function(dni) {
@@ -85,7 +87,8 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
             nombre : nombre,
             idcarrera : idcarrera,
             idalumno : idalumno,
-            fechanac : fechanac
+            fechanac : fechanac,
+            idnivel : idnivel
         }
     };
     return {

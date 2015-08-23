@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\SearchNoticias */
+/* @var $searchModel app\models\NoticiasSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = 'Noticias';
@@ -29,6 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'titulo',
             'imagen',
             'fecha',
+            'link',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
