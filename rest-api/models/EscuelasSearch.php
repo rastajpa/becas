@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Noticias;
+use app\models\Escuelas;
 
 /**
- * SearchNoticias represents the model behind the search form about `app\models\Noticias`.
+ * EscuelasSearch represents the model behind the search form about `app\models\Escuelas`.
  */
-class SearchNoticias extends Noticias
+class EscuelasSearch extends Escuelas
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SearchNoticias extends Noticias
     public function rules()
     {
         return [
-            [['idnoticia'], 'integer'],
-            [['titulo', 'imagen', 'fecha'], 'safe'],
+            [['idescuela'], 'integer'],
+            [['escuela'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SearchNoticias extends Noticias
      */
     public function search($params)
     {
-        $query = Noticias::find();
+        $query = Escuelas::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -56,12 +56,10 @@ class SearchNoticias extends Noticias
         }
 
         $query->andFilterWhere([
-            'idnoticia' => $this->idnoticia,
-            'fecha' => $this->fecha,
+            'escuela' => $this->escuela,
         ]);
 
-        $query->andFilterWhere(['like', 'titulo', $this->titulo])
-            ->andFilterWhere(['like', 'imagen', $this->imagen]);
+        $query->andFilterWhere(['=', 'idescuela', $this->idescuela]);
 
         return $dataProvider;
     }

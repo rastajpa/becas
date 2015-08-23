@@ -14,7 +14,16 @@ class DomicilioController extends ActiveController
 {
     public $modelClass = 'app\models\Domicilio';
 
-     public function prepareDataProvider() {
+
+public function actions() {
+
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        return $actions;
+    }
+
+    public function prepareDataProvider() {
 
         $searchModel = new \app\models\DomicilioSearch();    
         return $searchModel->search(\Yii::$app->request->queryParams);

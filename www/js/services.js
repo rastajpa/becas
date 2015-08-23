@@ -130,7 +130,7 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
         dpto = response.data[0].dpto;
     };
     var domicilioServices = function(idalumno){
-        return $http.get('http://192.168.1.104/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
+        return $http.get('http://localhost/becas/web/domicilio?DomicilioSearch[idalumno]=' + idalumno)
     };
     var domicilioFunction = function(){
         return { 

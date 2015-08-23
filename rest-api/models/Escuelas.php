@@ -26,10 +26,8 @@ class Escuelas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['idescuela', 'escuela'], 'required'],
-            [['idescuela'], 'integer'],
-            [['escuela'], 'string', 'max' => 40],
-            [['idescuela'], 'unique']
+            [['escuela'], 'required'],
+            [['escuela'], 'string', 'max' => 40]
         ];
     }
 
