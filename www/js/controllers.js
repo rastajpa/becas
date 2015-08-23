@@ -315,7 +315,11 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     })
   })
 })   
-.controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices) {
+.controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices,escuelasServices,secundariaServices) {
+  secundariaServices.secundariaServices('322').then(function(data){
+    console.log(data);
+  })
+
   loginServices.loginServices().then(function (data){
         $scope.login = loginServices.loginFunction();
         console.log("login" ,data);

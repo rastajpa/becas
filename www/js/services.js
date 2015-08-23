@@ -169,20 +169,54 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     }
     }]);
 
-app.service('escuelasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
+app.service('escuelasServices', ['$q','$http', function ($q,$http){
     
     var escuelasServices = function(idescuela){
         return $http.get('http://localhost/becas/web/escuelas?EscuelasSearch[idescuela]=' + idescuela)
     };
+    var escuelasPut = function(response){
+          escuela = response.data[0].escuela;
+    };
     var escuelasFunction = function(){
         return { 
-            causa : causa
+            escuela : escuela
         }
     };
     return {
         escuelasServices: escuelasServices,
         escuelasFunction : escuelasFunction,
         escuelasPut :escuelasPut
+    }
+    }]);
+app.service('secundariaServices', ['$q','$http', function ($q,$http){
+    
+    var secundariaServices = function(dni){
+        return $http.get('http://localhost/becas/web/secundarias?SecundariasSearch[dni]=' + dni)
+    };
+    var secudariaPut = function(response){
+        apellido = response.data[0].apellido;
+        causa = response.data[0].causa;
+        dni = response.data[0].dni;
+        escuela = response.data[0].escuela;
+        idsec = response.data[0].idsec;
+        nombre = response.data[0].nombre;
+        resultado = response.data[0].resultado;
+    };
+    var secudariaFunction = function(){
+        return { 
+            apellido : apellido,
+            causa : causa,
+            dni : dni,
+            escuela : escuela,
+            idsec : idsec,
+            nombre : nombre,
+            resultado : resultado,
+        }
+    };
+    return {
+        secundariaServices: secundariaServices,
+        secudariaFunction : secudariaFunction,
+        secudariaPut :secudariaPut
     }
     }]);
 
