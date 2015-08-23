@@ -173,10 +173,8 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 .controller('newsCtrl', function($scope,newsServices) {
   $scope.news = []
   newsServices.news().then(function (data){
-        
-          $scope.news = data.data;
-           console.log($scope.news);
-        }) 
+    $scope.news = data.data;
+  }) 
 })
 .controller('aboutCtrl', function($scope,$ionicModal,$ionicLoading, $timeout, $ionicPopup,$cordovaEmailComposer) {
   $ionicModal.fromTemplateUrl('pages/map.html', {
@@ -318,17 +316,26 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   })
 })   
 .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices) {
-  $scope.login = loginServices.loginFunction();
-  $scope.alumnos = alumnosServices.alumnosFunction();
-  carrerasServices.carrerasServices($scope.alumnos.idcarrera).then(function (data){
-    carrerasServices.carrerasPut(data);
-    domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
-      domicilioServices.domicilioPut(data);
-      $scope.domicilio = domicilioServices.domicilioFunction();
-      $scope.carrera = carrerasServices.carrerasFunction();
-      $scope.goBack = function () {
-        $ionicHistory.goBack();
-      }
-    })
+  loginServices.loginServices().then(function (data){
+        $scope.login = loginServices.loginFunction();
+        console.log("login" ,data);
+        alumnosServices.alumnosServices().then(function (data){
+              alumnosServices.alumnosPut(data);
+              console.log("alumno",data);
+              $scope.alumnos = alumnosServices.alumnosFunction();
+              carrerasServices.carrerasServices($scope.alumnos.idcarrera).then(function (data){
+                    carrerasServices.carrerasPut(data);
+                    console.log("carrera",data);
+                    domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
+                      domicilioServices.domicilioPut(data);
+                      console.log("domicilio",data);
+                      $scope.domicilio = domicilioServices.domicilioFunction();
+                      $scope.carrera = carrerasServices.carrerasFunction();
+                    })
+              })
+        })
   })
+  $scope.goBack = function () {
+    $ionicHistory.goBack();
+  }
 });

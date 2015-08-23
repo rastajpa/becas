@@ -14,7 +14,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         conectado = true;
     };
     var loginServices = function(email, password){
-        return $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+        return $http.get('http://192.168.1.104/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
     };
     var loginFunction = function(){
         return { 
@@ -44,7 +44,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
         comentarioE = response.data[0].comentarioE;
     };
     var evaluacionServices = function (dni) {
-        return $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
+        return $http.get('http://192.168.1.104/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
     };
     var evaluacionFunction = function(){
         return { 
@@ -73,12 +73,12 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
         apellido = response.data[0].apellido;
         nombre = response.data[0].nombre;
         idcarrera = response.data[0].idcarrera;
-        idalumno = response.data[0].idAlumno;
+        idalumno = response.data[0].idalumno;
         idnivel = response.data[0].idnivel;
         return true;
     };
     var alumnosServices = function(dni) {
-        return $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
+        return $http.get('http://192.168.1.104/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
     };
     var alumnosFunction = function(){
         return { 
@@ -103,7 +103,7 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
         carrera = response.data[0].carrera;
     };
     var carrerasServices =  function(idcarrera){
-        return $http.get('http://localhost/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
+        return $http.get('http://192.168.1.104/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
     };
     var carrerasFunction = function(){
         return { 
@@ -124,9 +124,13 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
     var dpto = "";
     var domicilioPut = function(response){
         telefono = response.data[0].telefono;
+        calle = response.data[0].calle;
+        celular = response.data[0].celular;
+        piso = response.data[0].piso;
+        dpto = response.data[0].dpto;
     };
     var domicilioServices = function(idalumno){
-        return $http.get('http://localhost/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
+        return $http.get('http://192.168.1.104/becas/web/domicilio?DomicilioSearch[dni]=' + idalumno)
     };
     var domicilioFunction = function(){
         return { 
@@ -151,7 +155,7 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         };
     };
     var causaServices = function(){
-        return $http.get('http://localhost/becas/web/causa')
+        return $http.get('http://192.168.1.104/becas/web/causa')
     };
     var causaFunction = function(){
         return { 
@@ -165,9 +169,26 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     }
     }]);
 
+app.service('escuelasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
+    
+    var escuelasServices = function(idescuela){
+        return $http.get('http://localhost/becas/web/escuelas?EscuelasSearch[idescuela]=' + idescuela)
+    };
+    var escuelasFunction = function(){
+        return { 
+            causa : causa
+        }
+    };
+    return {
+        escuelasServices: escuelasServices,
+        escuelasFunction : escuelasFunction,
+        escuelasPut :escuelasPut
+    }
+    }]);
+
 app.service('newsServices', ['$q','$http', function ($q,$http){
     var news = function(){
-        return $http.get('http://localhost/becas/web/noticias')
+        return $http.get('http://192.168.1.104/becas/web/noticias')
     };
     return {
         news: news

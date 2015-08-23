@@ -1,7 +1,7 @@
 <ion-view view-title="Noticias recientes" hide-back-button="true">
 <ion-content>
 <div class="list">
-  <a class="item item-thumbnail-left item-text-wrap" ng-repeat="new in news" href="#" onclick="window.open('{{new.link}}', '_system', 'location=yes'); return false;">
+  <a class="item item-thumbnail-left item-text-wrap" ng-repeat="new in news" ng-href="{{new.link}}" onclick="window.open(this.href, '_system', 'location=yes'); return false;">
     <img src="{{new.imagen}}">
     <h2>{{new.titulo}}</h2>
     <p>{{new.fecha}}</p>
