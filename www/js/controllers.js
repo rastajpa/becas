@@ -52,7 +52,6 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
-
   .state('eventmenu.options', {
     url: "/options",
     views: {
@@ -269,55 +268,53 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         });
       }
     })
-  })
+})
 })
 .controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
 })
 .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,causaServices,corteServices,secundariaServices,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
   $scope.login = loginServices.loginFunction();
   evaluacionServices.evaluacionServices($scope.login.usuario).then(function (data){
-    console.log(data);
     evaluacionServices.evaluacionPut(data);
     $scope.evaluacion = evaluacionServices.evaluacionFunction();
     alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
       alumnosServices.alumnosPut(data);
       $scope.alumnos = alumnosServices.alumnosFunction();
       if($scope.alumnos.idnivel== 1 || $scope.alumnos.idnivel == 3){
-      if($scope.evaluacion.causa1== 0 && $scope.evaluacion.causa2== 0 &&
-        $scope.evaluacion.causa3== 0 && $scope.evaluacion.causa4== 0 &&
-        $scope.evaluacion.comentarioE== ''){
-        corteServices.corte().then(function (data){
-          console.log($scope.evaluacion.puntajeE);
-        if($scope.evaluacion.puntajeE < data.data[0].valorcorte){
-           $scope.state = "FUERA DE CONCURSO";
-           $scope.puntajeE = $scope.evaluacion.puntajeE;
-           $scope.puntajeMinimo= data;
-        }
-        else{
-          if($scope.alumnos.becario==1){
-          $scope.state = "RENOVANTE";
-        }
-        if($scope.alumnos.becario==0){
-          $scope.state = "APROBADO";
-        }
+        if($scope.evaluacion.causa1== 0 && $scope.evaluacion.causa2== 0 &&
+          $scope.evaluacion.causa3== 0 && $scope.evaluacion.causa4== 0 &&
+          $scope.evaluacion.comentarioE== ''){
+          corteServices.corte().then(function (data){
+            if($scope.evaluacion.puntajeE < data.data[0].valorcorte){
+              $scope.state = "FUERA DE CONCURSO";
+              $scope.puntajeE = $scope.evaluacion.puntajeE;
+              $scope.puntajeMinimo= data.data[0].valorcorte;
+            }
+            else{
+              if($scope.alumnos.becario==1){
+                $scope.state = "RENOVANTE";
+              }
+              if($scope.alumnos.becario==0){
+                $scope.state = "APROBADO";
+              }
+            }
+          });
       }
-    });
-  }
       else{
         $scope.state = "FUERA DE CONCURSO";
         causaServices.causaServices().then(function (data){
           causaServices.causaPut(data);
           $scope.causa = causaServices.causaFunction();
-          if($scope.evaluacion.causa1!= null ){
+          if($scope.evaluacion.causa1!= 0 ){
             $scope.cause1 = $scope.causa.causa[0];
           }
-          if($scope.evaluacion.causa2!= null ){
+          if($scope.evaluacion.causa2!= 0 ){
             $scope.cause2 = $scope.causa.causa[1];
           }
-          if($scope.evaluacion.causa3!= null ){
+          if($scope.evaluacion.causa3!= 0 ){
             $scope.cause3 =$scope.causa.causa[2];
           }
-          if($scope.evaluacion.causa4!= null ){
+          if($scope.evaluacion.causa4!= 0 ){
             $scope.cause4 = $scope.causa.causa[3];        
           }
           $scope.commentE = $scope.evaluacion.comentarioE;
@@ -325,18 +322,17 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
     else{
-       secundariaServices.secundariaServices().then(function (data){
-      secundariaServices.secundariaPut(data);
-      $scope.secundaria = secundariaServices.secundariaFunction();
-      console.log($scope.secundaria );
-      if($scope.secundaria.resultado == 1 ){
-        $scope.state = "APROBADO";
-      }
-      else{
-        $scope.state = "DESAPROBADO";
-        $scope.causa1 = $scope.secundaria.causa;
-      }
-       })
+      secundariaServices.secundariaServices($scope.login.usuario).then(function (data){
+        secundariaServices.secundariaPut(data);
+        $scope.secundaria = secundariaServices.secundariaFunction();
+        if($scope.secundaria.resultado == 1 ){
+          $scope.state = "APROBADO";
+        }
+        else{
+          $scope.state = "DESAPROBADO";
+          $scope.cause1 = $scope.secundaria.causa;
+        }
+      })
     }
   })
 })   

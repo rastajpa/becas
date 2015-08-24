@@ -29,7 +29,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         loginFunction : loginFunction,
         logout : logout
     }
-    }]);
+}]);
 app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var causa1 = 0;
     var causa2 = 0;
@@ -61,7 +61,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
             evaluacionPut : evaluacionPut,
             evaluacionFunction : evaluacionFunction
         }
-        }]);
+    }]);
 app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var becario = "";
     var apellido = "";
@@ -99,7 +99,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
         alumnosPut : alumnosPut,
         alumnosFunction : alumnosFunction
     }
-    }]);
+}]);
 app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var carrera = "";
     var carrerasPut = function(response){
@@ -118,7 +118,7 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
         carrerasPut : carrerasPut,
         carrerasFunction : carrerasFunction
     }      
-    }]);
+}]);
 app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var telefono = "";
     var calle = "";
@@ -149,7 +149,7 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
         domicilioFunction : domicilioFunction,
         domicilioPut : domicilioPut
     }
-    }]);
+}]);
 app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var causa= {};
     var causaPut = function(response){
@@ -170,14 +170,13 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         causaFunction : causaFunction,
         causaPut :causaPut
     }
-    }]);
+}]);
 app.service('escuelasServices', ['$q','$http', function ($q,$http){
-    
     var escuelasServices = function(idescuela){
         return $http.get('http://localhost/becas/web/escuelas?EscuelasSearch[idescuela]=' + idescuela)
     };
     var escuelasPut = function(response){
-          escuela = response.data[0].escuela;
+        escuela = response.data[0].escuela;
     };
     var escuelasFunction = function(){
         return { 
@@ -189,7 +188,7 @@ app.service('escuelasServices', ['$q','$http', function ($q,$http){
         escuelasFunction : escuelasFunction,
         escuelasPut :escuelasPut
     }
-    }]);
+}]);
 app.service('secundariaServices', ['$q','$http', function ($q,$http){   
     var secundariaServices = function(dni){
         return $http.get('http://localhost/becas/web/secundarias?SecundariasSearch[dni]=' + dni)
@@ -219,7 +218,7 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
         secundariaFunction : secundariaFunction,
         secundariaPut :secundariaPut
     }
-    }]);
+}]);
 app.service('newsServices', ['$q','$http', function ($q,$http){
     var news = function(){
         return $http.get('http://localhost/becas/web/noticias')
@@ -227,7 +226,7 @@ app.service('newsServices', ['$q','$http', function ($q,$http){
     return {
         news: news
     }
-    }]);
+}]);
 app.service('corteServices', ['$q','$http', function ($q,$http){
     var corte = function(){
         return $http.get('http://localhost/becas/web/corte')
@@ -235,4 +234,4 @@ app.service('corteServices', ['$q','$http', function ($q,$http){
     return {
         corte: corte
     }
-    }]);
+}]);
