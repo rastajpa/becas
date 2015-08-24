@@ -2,16 +2,18 @@
 <ion-content>
 <h3>Estado actual de la beca:</h3>
 <div class="card">
-  <div class="item item-text-wrap text-center">
-    <div id="state"><h2><strong>{{state}}</strong></h2></div>
-    <div id="puntajeE"><h2><strong>{{puntajeE}}</strong></h2></div>
-    <div id="puntajeMinimo"><h2><strong>{{puntajeE}}</strong></h2></div>
-    <div id="cause1"><h4>{{cause1}}</h4></div>
-    <div id="cause2"><h4>{{cause2}}</h4></div>
-    <div id="cause3"><h4>{{cause3}}</h4></div>
-    <div id="cause4"><h4>{{cause4}}</h4></div>
-    <div id="commentE"><h4>{{commentE}}</h4></div>
-  </div>
+    <div class="item item-text-wrap text-center">
+        <div id="state"><h2><strong>{{state}}</strong></h2></div>
+        <div id="puntajeE" ng-show="puntajeE.length>0"><h2>Su puntaje es: <strong>{{puntajeE | number:3}}</strong></h2></div>
+        <div id="puntajeMinimo" ng-show="puntajeMinimo.length>0"><h2>Puntaje mínimo requerido: <strong>{{puntajeMinimo | number:3}}</strong></h2></div>
+        <div ng-show="cause1.length>0 || cause2.length>0 || cause3.length>0 ||cause4.length>0 || commentE.length>0">Causas:
+            <div id="cause1"><h4>{{cause1}}</h4></div>
+            <div id="cause2"><h4>{{cause2}}</h4></div>
+            <div id="cause3"><h4>{{cause3}}</h4></div>
+            <div id="cause4"><h4>{{cause4}}</h4></div>
+            <div id="commentE"><h4>{{commentE}}</h4></div>
+        </div>
+    </div>
 </div> 
 <h5>*Ingrese a la pestaña 'Reclamos' en caso de que desee realizar una consulta</h5>
 </ion-content>
