@@ -316,30 +316,41 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
   })
 })   
 .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices,escuelasServices,secundariaServices) {
-  secundariaServices.secundariaServices('322').then(function(data){
-    console.log(data);
-  })
-
   loginServices.loginServices().then(function (data){
-        $scope.login = loginServices.loginFunction();
-        console.log("login" ,data);
-        alumnosServices.alumnosServices().then(function (data){
-              alumnosServices.alumnosPut(data);
-              console.log("alumno",data);
-              $scope.alumnos = alumnosServices.alumnosFunction();
-              carrerasServices.carrerasServices($scope.alumnos.idcarrera).then(function (data){
-                    carrerasServices.carrerasPut(data);
-                    console.log("carrera",data);
-                    domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
-                      domicilioServices.domicilioPut(data);
-                      console.log("domicilio",data);
-                      $scope.domicilio = domicilioServices.domicilioFunction();
-                      $scope.carrera = carrerasServices.carrerasFunction();
-                    })
-              })
+    $scope.login = loginServices.loginFunction();
+    alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
+      alumnosServices.alumnosPut(data);
+      $scope.alumnos = alumnosServices.alumnosFunction();
+      if($scope.alumnos.idnivel == 2)
+      {
+        secundariaServices.secundariaServices().then(function (data){
+          secundariaServices.secudariaPut(data);
+          $scope.alumnos = secundariaServices.secudariaFunction();
+          escuelasServices.escuelasServices($scope.alumnoSec.escuela).then(function (data){
+            escuelasServices.escuelasPut(data);
+            $scope.carreras = escuelasServices.escuelasFunction();
+            $scope.carrera = $scope.carreras.escuela;
+            domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
+              domicilioServices.domicilioPut(data);
+              $scope.domicilio = domicilioServices.domicilioFunction();
+            })
+          })
         })
-  })
-  $scope.goBack = function () {
-    $ionicHistory.goBack();
-  }
+      }
+      else{
+        carrerasServices.carrerasServices($scope.alumnos.idcarrera).then(function (data){
+          carrerasServices.carrerasPut(data);
+          domicilioServices.domicilioServices($scope.alumnos.idalumno).then(function (data){
+            domicilioServices.domicilioPut(data);
+            $scope.domicilio = domicilioServices.domicilioFunction();
+            $scope.carreras = carrerasServices.carrerasFunction();
+            $scope.carrera = $scope.carreras.carrera;
+          })
+        })
+      }             
+    })
+})
+$scope.goBack = function () {
+  $ionicHistory.goBack();
+}
 });
