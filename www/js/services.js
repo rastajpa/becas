@@ -31,10 +31,10 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     }
     }]);
 app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
-    var causa1 = null;
-    var causa2 = null;
-    var causa3 = null;
-    var causa4 = null;
+    var causa1 = 0;
+    var causa2 = 0;
+    var causa3 = 0;
+    var causa4 = 0;
     var comentarioE = "";
     var evaluacionPut = function(response){
         causa1 = response.data[0].causa1;
@@ -42,6 +42,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
         causa3 = response.data[0].causa3;
         causa4 = response.data[0].causa4;
         comentarioE = response.data[0].comentarioE;
+        puntajeE = response.data[0].puntajeE;
     };
     var evaluacionServices = function (dni) {
         return $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
@@ -52,7 +53,8 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
             causa2 : causa2,
             causa3 : causa3,
             causa4 : causa4,
-            comentarioE : comentarioE
+            comentarioE : comentarioE,
+            puntajeE : puntajeE
         };};
         return {
             evaluacionServices : evaluacionServices,
@@ -192,7 +194,7 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
     var secundariaServices = function(dni){
         return $http.get('http://localhost/becas/web/secundarias?SecundariasSearch[dni]=' + dni)
     };
-    var secudariaPut = function(response){
+    var secundariaPut = function(response){
         apellido = response.data[0].apellido;
         causa = response.data[0].causa;
         dni = response.data[0].dni;
@@ -201,7 +203,7 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
         nombre = response.data[0].nombre;
         resultado = response.data[0].resultado;
     };
-    var secudariaFunction = function(){
+    var secundariaFunction = function(){
         return { 
             apellido : apellido,
             causa : causa,
@@ -214,8 +216,8 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
     };
     return {
         secundariaServices: secundariaServices,
-        secudariaFunction : secudariaFunction,
-        secudariaPut :secudariaPut
+        secundariaFunction : secundariaFunction,
+        secundariaPut :secundariaPut
     }
     }]);
 app.service('newsServices', ['$q','$http', function ($q,$http){

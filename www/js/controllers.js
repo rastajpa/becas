@@ -276,18 +276,19 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
 .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,causaServices,corteServices,secundariaServices,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
   $scope.login = loginServices.loginFunction();
   evaluacionServices.evaluacionServices($scope.login.usuario).then(function (data){
+    console.log(data);
     evaluacionServices.evaluacionPut(data);
     $scope.evaluacion = evaluacionServices.evaluacionFunction();
     alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
       alumnosServices.alumnosPut(data);
       $scope.alumnos = alumnosServices.alumnosFunction();
-      console.log($scope.alumnos);
       if($scope.alumnos.idnivel== 1 || $scope.alumnos.idnivel == 3){
-      if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
-        $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&
+      if($scope.evaluacion.causa1== 0 && $scope.evaluacion.causa2== 0 &&
+        $scope.evaluacion.causa3== 0 && $scope.evaluacion.causa4== 0 &&
         $scope.evaluacion.comentarioE== ''){
         corteServices.corte().then(function (data){
-        if($scope.evaluacion.puntajeE < data){
+          console.log($scope.evaluacion.puntajeE);
+        if($scope.evaluacion.puntajeE < data.data[0].valorcorte){
            $scope.state = "FUERA DE CONCURSO";
            $scope.puntajeE = $scope.evaluacion.puntajeE;
            $scope.puntajeMinimo= data;
