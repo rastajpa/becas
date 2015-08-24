@@ -14,7 +14,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         conectado = true;
     };
     var loginServices = function(email, password){
-        return $http.get('http://192.168.1.104/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+        return $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
     };
     var loginFunction = function(){
         return { 
@@ -44,7 +44,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
         comentarioE = response.data[0].comentarioE;
     };
     var evaluacionServices = function (dni) {
-        return $http.get('http://192.168.1.104/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
+        return $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
     };
     var evaluacionFunction = function(){
         return { 
@@ -78,7 +78,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
         return true;
     };
     var alumnosServices = function(dni) {
-        return $http.get('http://192.168.1.104/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
+        return $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
     };
     var alumnosFunction = function(){
         return { 
@@ -103,7 +103,7 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
         carrera = response.data[0].carrera;
     };
     var carrerasServices =  function(idcarrera){
-        return $http.get('http://192.168.1.104/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
+        return $http.get('http://localhost/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
     };
     var carrerasFunction = function(){
         return { 
@@ -155,7 +155,7 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         };
     };
     var causaServices = function(){
-        return $http.get('http://192.168.1.104/becas/web/causa')
+        return $http.get('http://localhost/becas/web/causa')
     };
     var causaFunction = function(){
         return { 
@@ -222,9 +222,18 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
 
 app.service('newsServices', ['$q','$http', function ($q,$http){
     var news = function(){
-        return $http.get('http://192.168.1.104/becas/web/noticias')
+        return $http.get('http://localhost/becas/web/noticias')
     };
     return {
         news: news
+    }
+    }]);
+
+app.service('corteServices', ['$q','$http', function ($q,$http){
+    var news = function(){
+        return $http.get('http://localhost/becas/web/corte')
+    };
+    return {
+        corte: corte
     }
     }]);
