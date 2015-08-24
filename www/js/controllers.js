@@ -350,7 +350,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
         secundariaServices.secundariaServices().then(function (data){
           secundariaServices.secudariaPut(data);
           $scope.alumnos = secundariaServices.secudariaFunction();
-          escuelasServices.escuelasServices($scope.alumnoSec.escuela).then(function (data){
+          escuelasServices.escuelasServices($scope.alumnos.escuela).then(function (data){
             escuelasServices.escuelasPut(data);
             $scope.carreras = escuelasServices.escuelasFunction();
             $scope.carrera = $scope.carreras.escuela;

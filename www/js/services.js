@@ -75,6 +75,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
         idcarrera = response.data[0].idcarrera;
         idalumno = response.data[0].idalumno;
         idnivel = response.data[0].idnivel;
+        fechanac = response.data[0].fechanac;
         return true;
     };
     var alumnosServices = function(dni) {
@@ -168,7 +169,6 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         causaPut :causaPut
     }
     }]);
-
 app.service('escuelasServices', ['$q','$http', function ($q,$http){
     
     var escuelasServices = function(idescuela){
@@ -188,8 +188,7 @@ app.service('escuelasServices', ['$q','$http', function ($q,$http){
         escuelasPut :escuelasPut
     }
     }]);
-app.service('secundariaServices', ['$q','$http', function ($q,$http){
-    
+app.service('secundariaServices', ['$q','$http', function ($q,$http){   
     var secundariaServices = function(dni){
         return $http.get('http://localhost/becas/web/secundarias?SecundariasSearch[dni]=' + dni)
     };
@@ -219,7 +218,6 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
         secudariaPut :secudariaPut
     }
     }]);
-
 app.service('newsServices', ['$q','$http', function ($q,$http){
     var news = function(){
         return $http.get('http://localhost/becas/web/noticias')
@@ -228,7 +226,6 @@ app.service('newsServices', ['$q','$http', function ($q,$http){
         news: news
     }
     }]);
-
 app.service('corteServices', ['$q','$http', function ($q,$http){
     var news = function(){
         return $http.get('http://localhost/becas/web/corte')
