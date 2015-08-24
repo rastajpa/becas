@@ -286,7 +286,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       if($scope.evaluacion.causa1== null && $scope.evaluacion.causa2== null &&
         $scope.evaluacion.causa3== null && $scope.evaluacion.causa4== null &&
         $scope.evaluacion.comentarioE== ''){
-        corteServices.corteServices().then(function (data){
+        corteServices.corte().then(function (data){
         if($scope.evaluacion.puntajeE < data){
            $scope.state = "FUERA DE CONCURSO";
            $scope.puntajeE = $scope.evaluacion.puntajeE;

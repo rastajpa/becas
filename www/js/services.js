@@ -227,7 +227,7 @@ app.service('newsServices', ['$q','$http', function ($q,$http){
     }
     }]);
 app.service('corteServices', ['$q','$http', function ($q,$http){
-    var news = function(){
+    var corte = function(){
         return $http.get('http://localhost/becas/web/corte')
     };
     return {
