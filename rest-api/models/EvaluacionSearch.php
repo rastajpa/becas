@@ -44,10 +44,6 @@ class EvaluacionSearch extends Evaluacion
     {
         $query = Evaluacion::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -77,7 +73,11 @@ class EvaluacionSearch extends Evaluacion
         ]);
 
         $query->andFilterWhere(['=', 'dniE', $this->dniE]);
-
-        return $dataProvider;
+ $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+         if($this->dniE!=''){            
+        return $dataProvider;}
+        else{return true;}
     }
 }

@@ -43,9 +43,6 @@ class EscuelasSearch extends Escuelas
     {
         $query = Escuelas::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
 
         $this->load($params);
 
@@ -60,7 +57,11 @@ class EscuelasSearch extends Escuelas
         ]);
 
         $query->andFilterWhere(['=', 'idescuela', $this->idescuela]);
-
-        return $dataProvider;
+$dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+         if($this->idescuela!=''){
+        return $dataProvider;}
+        else{return true;}
     }
 }

@@ -43,9 +43,7 @@ class SecundariasSearch extends Secundarias
     {
         $query = Secundarias::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        
 
         $this->load($params);
 
@@ -64,6 +62,11 @@ class SecundariasSearch extends Secundarias
 
         $query->andFilterWhere(['=', 'dni' , $this->dni]);
 
-        return $dataProvider;
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+         if($this->dni!=''){
+        return $dataProvider;}
+        else{return true;}
     }
 }

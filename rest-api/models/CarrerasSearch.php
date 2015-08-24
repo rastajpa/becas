@@ -43,10 +43,6 @@ class CarrerasSearch extends Carreras
     {
         $query = Carreras::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -69,9 +65,14 @@ class CarrerasSearch extends Carreras
             'anio7' => $this->anio7,
         ]);
 
-        $query->andFilterWhere(['like', 'carrera', $this->carrera])
-            ->andFilterWhere(['like', 'plan', $this->plan]);
-
-        return $dataProvider;
+        $query->andFilterWhere(['=', 'idcarrera', $this->idcarrera]);
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+         if($this->idcarrera!=''){
+        return $dataProvider;}
+        else{return true;}
+     
     }
 }

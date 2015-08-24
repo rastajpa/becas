@@ -44,10 +44,6 @@ class AlumnosSearch extends Alumnos
     {
         $query = Alumnos::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
-
         $this->load($params);
 
         if (!$this->validate()) {
@@ -84,6 +80,9 @@ class AlumnosSearch extends Alumnos
 
         $query->andFilterWhere(['=', 'dni', $this->dni]);
         
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
        if($this->dni!=''){
         return $dataProvider;}
         else{return true;}

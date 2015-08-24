@@ -192,7 +192,7 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
     var secundariaServices = function(dni){
         return $http.get('http://localhost/becas/web/secundarias?SecundariasSearch[dni]=' + dni)
     };
-    var secudariaPut = function(response){
+    var secundariaPut = function(response){
         apellido = response.data[0].apellido;
         causa = response.data[0].causa;
         dni = response.data[0].dni;
@@ -201,7 +201,7 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
         nombre = response.data[0].nombre;
         resultado = response.data[0].resultado;
     };
-    var secudariaFunction = function(){
+    var secundariaFunction = function(){
         return { 
             apellido : apellido,
             causa : causa,
@@ -214,8 +214,8 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
     };
     return {
         secundariaServices: secundariaServices,
-        secudariaFunction : secudariaFunction,
-        secudariaPut :secudariaPut
+        secundariaFunction : secundariaFunction,
+        secundariaPut :secundariaPut
     }
     }]);
 app.service('newsServices', ['$q','$http', function ($q,$http){
