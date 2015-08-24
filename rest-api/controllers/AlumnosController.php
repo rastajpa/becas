@@ -14,7 +14,16 @@ class AlumnosController extends ActiveController
 {
     public $modelClass = 'app\models\Alumnos';
 
- public function prepareDataProvider() {
+
+public function actions() {
+
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+
+        return $actions;
+    }
+
+    public function prepareDataProvider() {
 
         $searchModel = new \app\models\AlumnosSearch();    
         return $searchModel->search(\Yii::$app->request->queryParams);
