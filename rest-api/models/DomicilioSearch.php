@@ -75,6 +75,10 @@ class DomicilioSearch extends Domicilio
 
         $query->andFilterWhere(['=', 'idalumno', $this->idalumno]);
         
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+         
         if($this->idalumno!=''){
         return $dataProvider;}
         else{return true;}

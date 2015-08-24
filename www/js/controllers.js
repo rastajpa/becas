@@ -328,6 +328,7 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
        secundariaServices.secundariaServices().then(function (data){
       secundariaServices.secundariaPut(data);
       $scope.secundaria = secundariaServices.secundariaFunction();
+      console.log($scope.secundaria );
       if($scope.secundaria.resultado == 1 ){
         $scope.state = "APROBADO";
       }

@@ -43,9 +43,7 @@ class UsuariosSearch extends Usuarios
     {
         $query = Usuarios::find();
 
-        $dataProvider = new ActiveDataProvider([
-            'query' => $query,
-        ]);
+        
 
         $this->load($params);
 
@@ -64,7 +62,10 @@ class UsuariosSearch extends Usuarios
 
         $query->andFilterWhere(['=', 'clave', $this->clave])
             ->andFilterWhere(['=', 'email', $this->email]);
-        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+    
         if($this->email!=''&&$this->clave!=''){
         return $dataProvider;}
         else{return true;}
