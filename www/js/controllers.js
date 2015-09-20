@@ -16,24 +16,6 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
-  .state('eventmenu.checkin', {
-    url: "/check-in",
-    views: {
-      'menuContent' :{
-        templateUrl: "pages/check-in.html",
-        controller: "CheckinCtrl"
-      }
-    }
-  })
-  .state('eventmenu.attendees', {
-    url: "/attendees",
-    views: {
-      'menuContent' :{
-        templateUrl: "pages/attendees.html",
-        controller: "AttendeesCtrl"
-      }
-    }
-  })
   .state('eventmenu.about', {
     url: "/about",
     views: {
@@ -70,42 +52,42 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       }
     }
   })
-  .state('eventmenu.options.payments', {
-    url: "/payments",
-    views: {
-      'payments-tab' :{
-        templateUrl: "pages/payments.html",
-        controller: "paymentsCtrl"
-      }
+/*.state('eventmenu.options.payments', {
+url: "/payments",
+views: {
+'payments-tab' :{
+templateUrl: "pages/payments.html",
+controller: "paymentsCtrl"
+}
+}
+})*/
+.state('eventmenu.options.claims', {
+  url: "/claims",
+  views: {
+    'claims-tab' :{
+      templateUrl: "pages/claims.html",
+      controller: "claimsCtrl"
     }
-  })
-  .state('eventmenu.options.claims', {
-    url: "/claims",
-    views: {
-      'claims-tab' :{
-        templateUrl: "pages/claims.html",
-        controller: "claimsCtrl"
-      }
-    }
-  })
-  .state('eventmenu.user', {
-    url: "/user",
-    views: {
-      'menuContent' :{
-        templateUrl: "pages/user.html",
-        controller: "userCtrl"
-      }
-    }
-  })
-  $urlRouterProvider.otherwise("/event/home");
+  }
 })
-.controller('MenuCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory,loginServices) {
+.state('eventmenu.user', {
+  url: "/user",
+  views: {
+    'menuContent' :{
+      templateUrl: "pages/user.html",
+      controller: "userCtrl"
+    }
+  }
+})
+$urlRouterProvider.otherwise("/event/home");
+})
+.controller('MenuCtrl', function($scope,$q,$http, $ionicPopup, $state,$ionicHistory,loginServices,$ionicPlatform) {
   $scope.conectado = false;
   $scope.userConnected = function () {
     $scope.login = loginServices.loginFunction();
-  }
+  };
 })
-.controller('HomeCtrl', function($scope,$state,$ionicPopup,loginServices,$ionicLoading) {
+.controller('HomeCtrl', function($scope,$state,$ionicPopup,loginServices,$ionicLoading, $timeout) {
   $scope.data = {};
   $scope.login = function (){
     $ionicLoading.show({
@@ -113,7 +95,8 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
       animation: 'fade-in',
       showBackdrop: true,
       maxWidth: 200,
-      showDelay: 0
+      showDelay: 0,
+      duration: 10000
     });
     loginServices.loginServices($scope.data.email,$scope.data.password).then(function(data){
       if(data.data.length == 0){
@@ -131,7 +114,10 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     });
   }
 })
-.controller('MainCtrl', function($scope, $ionicSideMenuDelegate,$state,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices) {
+.controller('MainCtrl', function($scope,$ionicPlatform, $ionicSideMenuDelegate,$state,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices,HardwareBackButtonManager) {
+  $ionicPlatform.registerBackButtonAction(function () {
+    $ionicSideMenuDelegate.toggleLeft();       
+  },101);
   $ionicPopover.fromTemplateUrl('pages/popover.html', {
     scope: $scope
   }).then(function(popover) {
@@ -270,8 +256,8 @@ angular.module('becas.controllers', ['ionic','ngCordova'])
     })
 })
 })
-.controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
-})
+/*.controller('paymentsCtrl', function($scope,$ionicHistory,$q,$http) {
+})*/
 .controller('statesCtrl', function($scope,$ionicHistory,$q,$http,causaServices,corteServices,secundariaServices,loginServices,evaluacionServices,alumnosServices,carrerasServices,domicilioServices) {
   $scope.login = loginServices.loginFunction();
   evaluacionServices.evaluacionServices($scope.login.usuario).then(function (data){

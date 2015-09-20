@@ -12,11 +12,11 @@ body {
   background-color: #ED3237 !important;
 }
 .checkbox-assertive input:before, .checkbox-assertive .checkbox-icon:before {
-    border-color: #ED3237 !important;
+  border-color: #ED3237 !important;
 }
 .checkbox-assertive input:checked:before, .checkbox-assertive input:checked + .checkbox-icon:before {
-    background:  #ED3237 !important;
-    border-color:  #ED3237 !important;
+  background:  #ED3237 !important;
+  border-color:  #ED3237 !important;
 }
 .done {
   text-decoration: line-through;
@@ -34,7 +34,6 @@ body {
 .link:hover, .link:focus {
   color: #0b62ef !important;
 }
-
 .scroll{
   height: 100%;
 }
@@ -43,12 +42,12 @@ body {
   width: 100%;
 }
 .popover {
-    height: auto !important;
+  height: auto !important;
 }
 .popover ion-header-bar {
-    position: relative;
+  position: relative;
 }
 .popover ion-content {
-    top: 0;
-    position: relative;
+  top: 0;
+  position: relative;
 }

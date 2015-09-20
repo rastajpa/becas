@@ -14,7 +14,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         conectado = true;
     };
     var loginServices = function(email, password){
-        return $http.get('http://localhost/becas/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+        return $http.get('http://186.109.90.154/appmovil/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
     };
     var loginFunction = function(){
         return { 
@@ -45,7 +45,7 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
         puntajeE = response.data[0].puntajeE;
     };
     var evaluacionServices = function (dni) {
-        return $http.get('http://localhost/becas/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
+        return $http.get('http://186.109.90.154/appmovil/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
     };
     var evaluacionFunction = function(){
         return { 
@@ -81,7 +81,7 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
         return true;
     };
     var alumnosServices = function(dni) {
-        return $http.get('http://localhost/becas/web/alumnos?AlumnosSearch[dni]=' + dni)
+        return $http.get('http://186.109.90.154/appmovil/web/alumnos?AlumnosSearch[dni]=' + dni)
     };
     var alumnosFunction = function(){
         return { 
@@ -106,7 +106,7 @@ app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoa
         carrera = response.data[0].carrera;
     };
     var carrerasServices =  function(idcarrera){
-        return $http.get('http://localhost/becas/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
+        return $http.get('http://186.109.90.154/appmovil/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
     };
     var carrerasFunction = function(){
         return { 
@@ -133,7 +133,7 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
         dpto = response.data[0].dpto;
     };
     var domicilioServices = function(idalumno){
-        return $http.get('http://localhost/becas/web/domicilio?DomicilioSearch[idalumno]=' + idalumno)
+        return $http.get('http://186.109.90.154/appmovil/web/domicilio?DomicilioSearch[idalumno]=' + idalumno)
     };
     var domicilioFunction = function(){
         return { 
@@ -158,7 +158,7 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         };
     };
     var causaServices = function(){
-        return $http.get('http://localhost/becas/web/causa')
+        return $http.get('http://186.109.90.154/appmovil/web/causa')
     };
     var causaFunction = function(){
         return { 
@@ -173,7 +173,7 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
 }]);
 app.service('escuelasServices', ['$q','$http', function ($q,$http){
     var escuelasServices = function(idescuela){
-        return $http.get('http://localhost/becas/web/escuelas?EscuelasSearch[idescuela]=' + idescuela)
+        return $http.get('http://186.109.90.154/appmovil/web/escuelas?EscuelasSearch[idescuela]=' + idescuela)
     };
     var escuelasPut = function(response){
         escuela = response.data[0].escuela;
@@ -191,7 +191,7 @@ app.service('escuelasServices', ['$q','$http', function ($q,$http){
 }]);
 app.service('secundariaServices', ['$q','$http', function ($q,$http){   
     var secundariaServices = function(dni){
-        return $http.get('http://localhost/becas/web/secundarias?SecundariasSearch[dni]=' + dni)
+        return $http.get('http://186.109.90.154/appmovil/web/secundarias?SecundariasSearch[dni]=' + dni)
     };
     var secundariaPut = function(response){
         apellido = response.data[0].apellido;
@@ -221,7 +221,7 @@ app.service('secundariaServices', ['$q','$http', function ($q,$http){
 }]);
 app.service('newsServices', ['$q','$http', function ($q,$http){
     var news = function(){
-        return $http.get('http://localhost/becas/web/noticias')
+        return $http.get('http://186.109.90.154/appmovil/web/noticias')
     };
     return {
         news: news
@@ -229,9 +229,27 @@ app.service('newsServices', ['$q','$http', function ($q,$http){
 }]);
 app.service('corteServices', ['$q','$http', function ($q,$http){
     var corte = function(){
-        return $http.get('http://localhost/becas/web/corte')
+        return $http.get('http://186.109.90.154/appmovil/web/corte')
     };
     return {
         corte: corte
     }
 }]);
+app.service( 'HardwareBackButtonManager', function($ionicPlatform){
+  this.deregister = undefined;
+
+  this.disable = function(){
+    this.deregister = $ionicPlatform.registerBackButtonAction(function(e){
+    e.preventDefault();
+    return false;
+    }, 101);
+  }
+
+  this.enable = function(){
+    if( this.deregister !== undefined ){
+      this.deregister();
+      this.deregister = undefined;
+    }
+  }
+  return this;
+});
