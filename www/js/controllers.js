@@ -98,7 +98,7 @@ $urlRouterProvider.otherwise("/event/home");
       showDelay: 0,
       duration: 10000
     });
-    loginServices.loginServices($scope.data.email,$scope.data.password).then(function(data){
+    loginServices.loginServices($scope.data.dni,$scope.data.password).then(function(data){
       if(data.data.length == 0){
         $ionicLoading.hide();
         $ionicPopup.alert({

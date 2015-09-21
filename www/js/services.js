@@ -13,8 +13,9 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         email = response.data[0].email;
         conectado = true;
     };
-    var loginServices = function(email, password){
-        return $http.get('http://186.109.90.154/appmovil/web/usuarios?UsuariosSearch[email]=' + email + '&UsuariosSearch[clave]=' + password)
+    var loginServices = function(dni, password){
+        var hash = CryptoJS.MD5(dni);
+        return $http.get('http://186.109.90.154/appmovil/web/usuarios?UsuariosSearch[usuario]=' + hash + '&UsuariosSearch[clave]=' + password)
     };
     var loginFunction = function(){
         return { 

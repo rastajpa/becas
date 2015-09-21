@@ -55,18 +55,18 @@ class UsuariosSearch extends Usuarios
 
         $query->andFilterWhere([
             'idusuarios' => $this->idusuarios,
-            'usuario' => $this->usuario,
+            'email' => $this->email,
             'permiso' => $this->permiso,
             'fechaserver' => $this->fechaserver,
         ]);
 
         $query->andFilterWhere(['=', 'clave', $this->clave])
-            ->andFilterWhere(['=', 'email', $this->email]);
+            ->andFilterWhere(['=', 'usuario', $this->usuario]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
     
-        if($this->email!=''&&$this->clave!=''){
+        if($this->usuario!=''&&$this->clave!=''){
         return $dataProvider;}
         else{return true;}
     }
