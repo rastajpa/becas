@@ -15,7 +15,7 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     };
     var loginServices = function(dni, password){
         var hash = CryptoJS.MD5(dni);
-        return $http.get('http://186.109.90.154/appmovil/web/usuarios?UsuariosSearch[usuario]=' + hash + '&UsuariosSearch[clave]=' + password)
+        return $http.get('http://186.109.90.154/appmovil/web/usuarios?UsuariosSearch[usuario]=' + hash.toString() + '&UsuariosSearch[clave]=' + password)
     };
     var loginFunction = function(){
         return { 
