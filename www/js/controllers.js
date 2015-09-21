@@ -103,7 +103,15 @@ $urlRouterProvider.otherwise("/event/home");
         $ionicLoading.hide();
         $ionicPopup.alert({
           title: 'Fallo el ingreso',
-          template: 'Por favor revise sus datos. Si todavía no tiene un usuario y una contraseña regístrese en el sitio web: www.becasuniversitarias.unt.edu.ar'
+          template: 'Por favor revise sus datos. Si todavía no tiene un usuario y una contraseña regístrese en el sitio web: www.becasuniversitarias.unt.edu.ar',
+          buttons: [
+      {
+        text: 'Entendido',
+        type: 'button-assertive',
+        onTap: function(e) {
+          return e.isIonicTap;
+        }
+      }]
         });
       }
       else{
@@ -114,10 +122,27 @@ $urlRouterProvider.otherwise("/event/home");
     });
   }
 })
-.controller('MainCtrl', function($scope,$ionicPlatform, $ionicSideMenuDelegate,$state,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices,HardwareBackButtonManager) {
+.controller('MainCtrl', function($scope,$ionicPlatform,$ionicPopup, $ionicSideMenuDelegate,$state,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices,HardwareBackButtonManager) {
+
   $ionicPlatform.registerBackButtonAction(function () {
-    $ionicSideMenuDelegate.toggleLeft();       
-  },101);
+    $ionicPopup.confirm({
+      title: '¡Atención!',
+      template: '¿Está seguro/a que desea salir de la aplicación?',
+      buttons: [
+      {
+        text: 'Si',
+        type: 'button-assertive',
+        onTap: function(e) {
+          return e.isIonicTap;
+        }
+      },
+      { text: 'No' }
+      ]
+    }).then(function(res) {
+      if (res === true) {
+        ionic.Platform.exitApp();
+      }})       
+},101);
   $ionicPopover.fromTemplateUrl('pages/popover.html', {
     scope: $scope
   }).then(function(popover) {
