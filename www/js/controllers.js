@@ -98,32 +98,30 @@ $urlRouterProvider.otherwise("/event/home");
       showDelay: 0,
       duration: 10000
     });
-    loginServices.loginServices($scope.data.dni,$scope.data.password).then(function(data){
+    loginServices.loginServices($scope.data.dni,$scope.data.password).then(function (data){
       if(data.data.length == 0){
         $ionicLoading.hide();
         $ionicPopup.alert({
           title: 'Fallo el ingreso',
           template: 'Por favor revise sus datos. Si todavía no tiene un usuario y una contraseña regístrese en el sitio web: www.becasuniversitarias.unt.edu.ar',
           buttons: [
-      {
-        text: 'Entendido',
-        type: 'button-assertive',
-        onTap: function(e) {
-          return e.isIonicTap;
-        }
-      }]
+          {
+            text: 'Entendido',
+            type: 'button-assertive',
+            onTap: function(e) {
+              return e.isIonicTap;
+            }
+          }]
         });
       }
       else{
         $ionicLoading.hide();
-        loginServices.loginPut(data);                
-        $state.go('eventmenu.options.states');               
+        loginServices.loginPut(data);             
       }
     });
   }
 })
 .controller('MainCtrl', function($scope,$ionicPlatform,$ionicPopup, $ionicSideMenuDelegate,$state,$ionicNavBarDelegate,$ionicHistory,$ionicPopover,loginServices,HardwareBackButtonManager) {
-
   $ionicPlatform.registerBackButtonAction(function () {
     $ionicPopup.confirm({
       title: '¡Atención!',
@@ -142,7 +140,7 @@ $urlRouterProvider.otherwise("/event/home");
       if (res === true) {
         ionic.Platform.exitApp();
       }})       
-},101);
+  },101);
   $ionicPopover.fromTemplateUrl('pages/popover.html', {
     scope: $scope
   }).then(function(popover) {
@@ -292,6 +290,10 @@ $urlRouterProvider.otherwise("/event/home");
       alumnosServices.alumnosPut(data);
       $scope.alumnos = alumnosServices.alumnosFunction();
       if($scope.alumnos.idnivel== 1 || $scope.alumnos.idnivel == 3){
+        if($scope.alumnos.becario == ""){
+          $scope.state = "INFORMACIÓN ACADÉMICA PENDIENTE";
+          return;
+        }
         if($scope.evaluacion.causa1== 0 && $scope.evaluacion.causa2== 0 &&
           $scope.evaluacion.causa3== 0 && $scope.evaluacion.causa4== 0 &&
           $scope.evaluacion.comentarioE== ''){
@@ -336,6 +338,10 @@ $urlRouterProvider.otherwise("/event/home");
       secundariaServices.secundariaServices($scope.login.usuario).then(function (data){
         secundariaServices.secundariaPut(data);
         $scope.secundaria = secundariaServices.secundariaFunction();
+        if($scope.secundaria.resultado == ""){
+          $scope.state = "INFORMACIÓN ACADÉMICA PENDIENTE";
+          return;
+        }
         if($scope.secundaria.resultado == 1 ){
           $scope.state = "APROBADO";
         }
@@ -349,8 +355,8 @@ $urlRouterProvider.otherwise("/event/home");
 })   
 })
 .controller('userCtrl', function($scope,$ionicHistory,$ionicNavBarDelegate,loginServices,alumnosServices,domicilioServices,carrerasServices,escuelasServices,secundariaServices) {
-  loginServices.loginServices().then(function (data){
-    $scope.login = loginServices.loginFunction();
+  $scope.login = loginServices.loginFunction();
+  loginServices.loginServices($scope.login.usuario,$scope.login.clave).then(function (data){
     alumnosServices.alumnosServices($scope.login.usuario).then(function (data){
       alumnosServices.alumnosPut(data);
       $scope.alumnos = alumnosServices.alumnosFunction();

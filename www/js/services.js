@@ -1,17 +1,23 @@
 var app = angular.module('becas.services', ['ionic','ngCordova']);
 app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var usuario = "";
-    var email="";
+    var email = "";
+    var clave = "";
     var conectado = false;
     var logout = function(){
         usuario = "";
         email = "";
+        clave = "";
         conectado = false;
     }
     var loginPut = function(response){
-        usuario = response.data[0].usuario;
-        email = response.data[0].email;
-        conectado = true;
+        if(response.data.length > 0){
+            usuario = response.data[0].usuario;
+            email = response.data[0].email;
+            clave = response.data[0].clave;
+            conectado = true;
+        }
+        $state.go('eventmenu.options.states');  
     };
     var loginServices = function(dni, password){
         var hash = CryptoJS.MD5(password);
@@ -21,7 +27,8 @@ app.service('loginServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
         return { 
             usuario : usuario,
             email : email,
-            conectado : conectado
+            conectado : conectado,
+            clave : clave
         };
     };
     return {
@@ -37,13 +44,16 @@ app.service('evaluacionServices', ['$q','$http','$ionicPopup','$state', '$ionicL
     var causa3 = 0;
     var causa4 = 0;
     var comentarioE = "";
+    var puntajeE = "";
     var evaluacionPut = function(response){
-        causa1 = response.data[0].causa1;
-        causa2 = response.data[0].causa2;
-        causa3 = response.data[0].causa3;
-        causa4 = response.data[0].causa4;
-        comentarioE = response.data[0].comentarioE;
-        puntajeE = response.data[0].puntajeE;
+        if(response.data.length > 0){
+            causa1 = response.data[0].causa1;
+            causa2 = response.data[0].causa2;
+            causa3 = response.data[0].causa3;
+            causa4 = response.data[0].causa4;
+            comentarioE = response.data[0].comentarioE;
+            puntajeE = response.data[0].puntajeE;
+        }
     };
     var evaluacionServices = function (dni) {
         return $http.get('http://186.109.90.154/appmovil/web/evaluacion?EvaluacionSearch[dniE]=' + dni)
@@ -72,14 +82,16 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
     var fechanac = "";
     var idnivel = "";
     var alumnosPut = function(response){
-        becario = response.data[0].becario;
-        apellido = response.data[0].apellido;
-        nombre = response.data[0].nombre;
-        idcarrera = response.data[0].idcarrera;
-        idalumno = response.data[0].idalumno;
-        idnivel = response.data[0].idnivel;
-        fechanac = response.data[0].fechanac;
-        return true;
+        if(response.data.length > 0){
+            becario = response.data[0].becario;
+            apellido = response.data[0].apellido;
+            nombre = response.data[0].nombre;
+            idcarrera = response.data[0].idcarrera;
+            idalumno = response.data[0].idalumno;
+            idnivel = response.data[0].idnivel;
+            fechanac = response.data[0].fechanac;
+            return true;
+        }
     };
     var alumnosServices = function(dni) {
         return $http.get('http://186.109.90.154/appmovil/web/alumnos?AlumnosSearch[dni]=' + dni)
@@ -104,7 +116,10 @@ app.service('alumnosServices', ['$q','$http','$ionicPopup','$state', '$ionicLoad
 app.service('carrerasServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var carrera = "";
     var carrerasPut = function(response){
-        carrera = response.data[0].carrera;
+
+        if(response.data.length > 0){
+            carrera = response.data[0].carrera;
+        }
     };
     var carrerasServices =  function(idcarrera){
         return $http.get('http://186.109.90.154/appmovil/web/carreras?CarrerasSearch[idcarrera]=' + idcarrera)
@@ -127,11 +142,14 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
     var piso = "";
     var dpto = "";
     var domicilioPut = function(response){
-        telefono = response.data[0].telefono;
-        calle = response.data[0].calle;
-        celular = response.data[0].celular;
-        piso = response.data[0].piso;
-        dpto = response.data[0].dpto;
+
+        if(response.data.length > 0){
+            telefono = response.data[0].telefono;
+            calle = response.data[0].calle;
+            celular = response.data[0].celular;
+            piso = response.data[0].piso;
+            dpto = response.data[0].dpto;
+        }
     };
     var domicilioServices = function(idalumno){
         return $http.get('http://186.109.90.154/appmovil/web/domicilio?DomicilioSearch[idalumno]=' + idalumno)
@@ -154,9 +172,12 @@ app.service('domicilioServices', ['$q','$http','$ionicPopup','$state', '$ionicLo
 app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoading', function ($q,$http,$ionicPopup,$state,$ionicLoading){
     var causa= {};
     var causaPut = function(response){
-        for (var i = response.data.length - 1; i >= 0; i--) {
-            causa[i] = response.data[i].causa;
-        };
+
+        if(response.data.length > 0){
+            for (var i = response.data.length - 1; i >= 0; i--) {
+                causa[i] = response.data[i].causa;
+            };
+        }
     };
     var causaServices = function(){
         return $http.get('http://186.109.90.154/appmovil/web/causa')
@@ -173,11 +194,16 @@ app.service('causaServices', ['$q','$http','$ionicPopup','$state', '$ionicLoadin
     }
 }]);
 app.service('escuelasServices', ['$q','$http', function ($q,$http){
+    var escuela = "";
+
     var escuelasServices = function(idescuela){
         return $http.get('http://186.109.90.154/appmovil/web/escuelas?EscuelasSearch[idescuela]=' + idescuela)
     };
     var escuelasPut = function(response){
-        escuela = response.data[0].escuela;
+
+        if(response.data.length > 0){
+            escuela = response.data[0].escuela;
+        }
     };
     var escuelasFunction = function(){
         return { 
@@ -191,17 +217,26 @@ app.service('escuelasServices', ['$q','$http', function ($q,$http){
     }
 }]);
 app.service('secundariaServices', ['$q','$http', function ($q,$http){   
+    var apellido = "";
+    var causa = "";
+    var dni = "";
+    var escuela = "";
+    var idsec = ""
+    var nombre = "";
+    var resultado = "";
     var secundariaServices = function(dni){
         return $http.get('http://186.109.90.154/appmovil/web/secundarias?SecundariasSearch[dni]=' + dni)
     };
     var secundariaPut = function(response){
-        apellido = response.data[0].apellido;
-        causa = response.data[0].causa;
-        dni = response.data[0].dni;
-        escuela = response.data[0].escuela;
-        idsec = response.data[0].idsec;
-        nombre = response.data[0].nombre;
-        resultado = response.data[0].resultado;
+        if(response.data.length > 0){
+            apellido = response.data[0].apellido;
+            causa = response.data[0].causa;
+            dni = response.data[0].dni;
+            escuela = response.data[0].escuela;
+            idsec = response.data[0].idsec;
+            nombre = response.data[0].nombre;
+            resultado = response.data[0].resultado;
+        }
     };
     var secundariaFunction = function(){
         return { 
@@ -236,21 +271,19 @@ app.service('corteServices', ['$q','$http', function ($q,$http){
         corte: corte
     }
 }]);
-app.service( 'HardwareBackButtonManager', function($ionicPlatform){
-  this.deregister = undefined;
-
-  this.disable = function(){
-    this.deregister = $ionicPlatform.registerBackButtonAction(function(e){
-    e.preventDefault();
-    return false;
-    }, 101);
-  }
-
-  this.enable = function(){
-    if( this.deregister !== undefined ){
-      this.deregister();
-      this.deregister = undefined;
+app.service('HardwareBackButtonManager', function($ionicPlatform){
+    this.deregister = undefined;
+    this.disable = function(){
+        this.deregister = $ionicPlatform.registerBackButtonAction(function(e){
+            e.preventDefault();
+            return false;
+        }, 101);
     }
-  }
-  return this;
+    this.enable = function(){
+        if( this.deregister !== undefined ){
+            this.deregister();
+            this.deregister = undefined;
+        }
+    }
+    return this;
 });
